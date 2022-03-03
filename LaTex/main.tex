@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{float}
+
+\usepackage{tikz}
+
+% No indentation after new paragraph
+\setlength{\parindent}{0cm}
+
+% No vertical space above or below a math environment
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt} 
+
+% Hyperlink setup
+\hypersetup{
+	colorlinks   = true,
+	linkcolor=blue,
+	citecolor=blue
+}
+
+% To use dottet line in table of contents
+% https://tex.stackexchange.com/questions/53898/how-to-get-lines-with-dots-in-the-table-of-contents-for-sections
+\usepackage{tocloft}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% The basic number types N, Z, Q, R, C
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{R}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\eRR}{(\minus\infty,\plus\infty]}
+\newcommand{\CC}{\mathbb{C}}
+
+% The fancy letters
+\newcommand{\rH}{\mathcal{H}}
+\newcommand{\rP}{\mathcal{P}}
+\newcommand{\rD}{\mathscr{D}}
+\newcommand{\rC}{\mathcal{C}}
+\newcommand{\rX}{\mathcal{X}}
+\newcommand{\rY}{\mathcal{Y}}
+\newcommand{\rL}{\mathcal{L}}
+\newcommand{\rK}{\mathcal{K}}
+
+% Machine Learning
+\newcommand{\trSet}{D_{\mathrm{Train}}}
+\newcommand{\teSet}{D_{\mathrm{Test}}}
+\newcommand{\daSet}{D}
+\newcommand{\hyp}{\mathcal{F}}
+\newcommand{\reMe}{\mu}
+\newcommand{\emMe}{\mu_{\mathrm{emp}}}
+
+% Common shortcuts
+\newcommand{\ra}{\rightarrow}
+\newcommand{\se}{\searrow}
+\newcommand{\ane}{\nearrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\sep}{\;\vert\;} % separator
+\newcommand{\st}{\;:\;} % such that
+\newcommand{\ha}{\rightharpoonup} % half arrow
+\newcommand{\prt}{\partial}
+\newcommand{\vp}{\varphi}
+
+%Small plus and minus
+\newcommand{\plus}{\raisebox{.2\height}{\scalebox{.8}{+}}}
+\newcommand{\minus}{\raisebox{.2\height}{\scalebox{1}{-}}}
+\newcommand{\sgeq}{\raisebox{.0\height}{\scalebox{.55}{$\geq$}}}
+
+% Mathematical definitions
+\newcommand{\atinner}[3]{\left\langle #1,\,#2\right\rangle_{#3}}
+\newcommand{\inner}[2]{\atinner{#1}{#2}{\rH}}
+\newcommand{\ltwoinner}[2]{\atinner{#1}{#2}{\ltwosub}}
+\newcommand{\atnorm}[2]{\left\Vert #1\right\Vert_{#2}}
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\norm}[1]{\atnorm{#1}{\rH}}
+\newcommand{\infnorm}[1]{\atnorm{#1}{\infty}}
+\newcommand{\normltwoat}[2]{\Vert #1\Vert_{L^2(#2;\rH)}}
+\newcommand{\normltwo}[1]{\normltwoat{#1}{0,T}}
+\newcommand{\normloneat}[2]{\Vert #1\Vert_{L^1(#2;\,\rH)}}
+\newcommand{\normlone}[1]{\normloneat{#1}{0,T}}
+\newcommand{\norminf}[1]{\atnorm{#1}{\infty}}
+\newcommand{\simplies}{\;\;\Rightarrow\;\;}
+\newcommand{\qimplies}{\qquad\Rightarrow\qquad}
+\newcommand{\sequiv}{\;\;\Leftrightarrow\;\;}
+\newcommand{\qequiv}{\qquad\Leftrightarrow\qquad}
+\DeclareMathOperator{\idm}{\mathrm{id}}
+\DeclareMathOperator{\conv}{\mathrm{conv}\,}
+\DeclareMathOperator{\cl}{\mathrm{cl}\,}
+\DeclareMathOperator{\supp}{\mathrm{supp}}
+\newcommand{\id}{\idm_{\rH}}
+\newcommand{\idltwo}{\idm_{\ltwosub}}
+\DeclareMathOperator{\res}{\mathcal{J}}
+\DeclareMathOperator{\pr}{\mathrm{Pr}}
+\DeclareMathOperator{\dist}{\mathrm{dist}}
+\DeclareMathOperator{\esssup}{\mathrm{ess}\,\sup}
+\DeclareMathOperator{\ltwomap}{\mathcal{I}}
+\DeclareMathOperator*{\minimize}{\mathrm{minimize}}
+\DeclareMathOperator*{\subj}{\mathrm{subject\;to}}
+\DeclareMathOperator*{\Int}{\mathrm{int}}
+\newcommand{\atlp}[3]{L^{#1}\big(#2;\,#3\big)}
+\newcommand{\atlpsub}[3]{L^{#1}(#2;\,#3)}
+\newcommand{\lpgeneral}[1]{\atlp{p}{#1}{\rH}}
+\newcommand{\linf}{\atlp{\infty}{0,T}{\rH}}
+\newcommand{\linfnn}{\atlp{\infty}{0,\plus\infty}{\rH}}
+\newcommand{\lone}{\atlp{1}{0,T}{\rH}}
+\newcommand{\ltwo}{\atlp{2}{0,T}{\rH}}
+\newcommand{\ltwosub}{L^2}
+\newcommand{\wonetwo}{W^{1,2}(0,T;\,\rH)}
+\newcommand{\woneone}{W^{1,1}(0,T;\,\rH)}
+\newcommand{\atcts}[2]{C^{\, 0}\big(#1;\,#2\big)}
+\newcommand{\cts}{\atcts{0,T}{\rH}}
+\newcommand{\bv}{\mathrm{BV}(0,T;\,\rH)}
+
+\begin{document}
+	\include{titlepage}
+	\include{abstract}
+	
+	\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}	
+	\begingroup
+	\let\clearpage\relax
+	\tableofcontents
+	
+	%\include{special_notation}
+	
+	\include{introduction}
+	\include{maximal_monotone_operators}
+	\include{gradient_flow}
+	\include{application}
+	\include{appendix}
+	\endgroup
+	
+	\bibliographystyle{plain}
+	\bibliography{ref.bib} 
+	
+\end{document}

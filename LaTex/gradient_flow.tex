@@ -1,0 +1,2300 @@
+\section{Gradient Flow}
+
+In this section we will introduce the Gradient Flow problem.
+We begin the section by presenting some results of
+function spaces over a $ \RR $-Hilbert space, which
+we will need for the duration of this chapter.
+The Gradient Flow problem is divided into 
+the homogeneous gradient flow problem and the
+inhomogeneous gradient flow problem. 
+We end this section by extensively studying the inhomogenuous gradient
+flow problem, in the case the operator is the sub differential
+of a proper convex lower semicontinuous mapping on a $ \RR $-Hilbert space.\medskip 
+
+\subsection{Preliminaries}
+In this section we introduce measurable functions in a Hilbert space, 
+which we will need to discuss Gradient Flow. In particular
+we need to define the $ p $-measures on a $ \RR $-Hilbert space,
+the notion of weak derivatives, absolute
+continuity and bounded variation.\smallskip
+
+Throughout this section that $ I\subseteq \RR $ be 
+any interval of $ \RR $.\smallskip
+
+We will need some standard results of $ L^p $ spaces
+on a $ \RR $-Hilbert space. These will not be 
+proven, as they are only tangentially related with the
+topics of this paper. The proofs can be found 
+in the appendix of the textbook
+of Brézis \cite[Appendix 1 and 2]{brezis1973ope}.
+
+\begin{definition} 
+	We say a function $ r:I\ra\rH $ is simple
+	if it takes only finite many values and the preimages are 
+	elements of the Borel set of $ I $. The integral of $ r $
+	is given by
+	\begin{align*}
+		\int_I r\,dm(x)
+		:=\sum_{x\in\rH} x\cdot m(r^{-1}(x)),
+	\end{align*}
+	where $ m $ is the Lebesgue measure. In future we will replace
+	the notation $ dm(x) $ with $ dx $.
+\end{definition}
+
+\begin{definition}
+	We call a function $ f:I\ra $
+	measurable, if there exists a sequence
+	of simple functions $ (f_n)_{n\in\NN} $
+	that converges pointwise almost everywhere
+	to $ f $. Almost everywhere here means that the
+	set of points $ P $ for which the condition does not
+	apply is a null set, i.e. it has Lebesgue measure zero or $ m(P)=0 $.
+\end{definition}
+
+\begin{definition}
+	We denote by $ L^0(I;\,\rH) $ the space of
+	equivalence classes of measurable functions
+	$ I\ra\rH $. We say two measurable functions 
+	$ f,g:I\ra\rH $ are equivalent if and only
+	if the difference $ f-g $ is equal to $ 0 $
+	almost everywhere. Whenever we refer
+	to an element in $ L^0(I;\,\rH) $, we will
+	always work with any representative of an equivalence
+	class. 
+\end{definition}
+
+\begin{definition}\label{definition:lp space in hilbert space}
+	For any $ p\in[1,\plus\infty] $ let $ \lpgeneral{I} $
+	be the Banach space of all measurable functions 
+	$ u\in L^0(I;\,\rH) $ that attain a finite value
+	of the corresponding norms
+	\begin{alignat*}{3}
+		\atnorm{u}{p}&:=\left(\int_{\RR}\norm{u}^p\, dt\right)\strut^{\frac{1}{p}}
+		\qquad &&\text{for }p\in [1,\plus\infty),\\
+		\infnorm{u}&:=\esssup\,\norm{u}
+		\qquad &&\text{for }p=\plus\infty.
+	\end{alignat*}
+\end{definition}
+
+\begin{theorem}[Lebesgue Dominated Convergence]
+	Let $ (f_n)_{n\in\NN}\subseteq L^0(I;\,\rH) $
+	be a sequence of measurable functions such
+	that $ f_n\ra f $ almost everywhere on $ I $ 
+	for some mapping $ f:I\ra\RR $. Let 
+	$ g\in L^1(I;\,\RR) $ with $ \norm{f_n}\leq g $
+	almost everywhere on $ I $ for all $ n\in\NN $.
+	Then we have that $ f\in L^0(I;\,\rH) $ and
+	\begin{align*}
+		\lim_{n\ra\plus\infty}\int_I \norm{f_n-f}\,dt
+		=0,
+	\end{align*}
+	in particular
+	\begin{align*}
+		\lim_{n\ra\plus\infty}\int_I f_n\,dt
+		=\int_I f_n\,dt.
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}[Fatou's Lemma]
+	Let $ (f_n)_{n\in\NN}\subseteq L^0(I;\,\rH) $
+	be a sequence of measurable functions such
+	that $ f_n\ha f $ almost everywhere on $ I $ 
+	for some mapping $ f:I\ra\RR $. If the
+	sequence is bounded in the $ L^1 $ norm,
+	i.e.
+	\begin{align*}
+		\sup_{n\in\NN}\int_I \norm{f}\,dt
+		<\plus\infty,
+	\end{align*}
+	then we have that $ f\in L^1(0,T;\,\rH) $ with
+	an estimate
+	\begin{align*}
+		\int_I \norm{f}\,dt
+		\leq\liminf_{n\ra\plus\infty}\int_I \norm{f_n}\,dt.
+	\end{align*}
+\end{theorem}
+
+\begin{lemma}\label{lemma:approx by step func}
+	Let $ I=[a,b] $ and let $ f\in L^1(a,b;\,\rH)$.
+	Then for any $ \varepsilon>0 $, there exists
+	a partition $ a=x_0<x_1<\ldots<x_n=b $ and
+	values $ c_1,\ldots,c_n\in \rH $ such that
+	for the simple function $ g:[a,b]\ra\rH $,
+	defined by $ g=c_j $ on $ [x_{j-1},x_j] $,
+	we have $ \normloneat{f-g}{a,b}<\varepsilon $.
+\end{lemma}
+
+\begin{definition}
+	Let $ I=[a,b] $, then
+	we say a function $ f:I\ra\rH $ is of bounded 
+	variation on $ [a,b] $, if there exists
+	a constants $ C>0 $, such that for
+	every partition $ a=x_0<x_1<\ldots<x_n=b $
+	we have
+	\begin{align*}
+		\sum_{j=1}^n \norm{f(x_j)-f(x_{j-1})}
+		\leq C.
+	\end{align*}
+	We denote by $ \mathrm{Var(f;\,[a,b])} $
+	the infimum of admissible constants $ C $.
+	The set of all functions of bounded 
+	variation on $ [a,b] $ is denoted by 
+	$ \mathrm{BV}(a,b) $. We write
+	$ V_f(t):=\mathrm{Var(f;\,[a,t])} $
+	for all $ t\in[a,b] $.
+\end{definition}
+
+\begin{definition}
+	We say a function $ f:I\ra\rH $ is
+	absolutely continuous if and only if
+	for every $ \varepsilon>0 $ there exists
+	$ \delta>0 $ such that for any
+	countable set $ U $ of open bounded disjoint intervals
+	of $ I $, whose closures are subsets of $ I $, we have that
+	\begin{align*}
+		\sum_{J\in U} m(J)
+		<\delta
+		\qimplies
+		\sum_{J\in U}\norm{f(\sup J) -f(\inf J)}
+		<\varepsilon.
+	\end{align*}
+\end{definition}
+
+\begin{remark}
+	$\bullet$ One quickly sees from the definition 
+	that an absolutely continuous function on a
+	compact interval $ [a,b] $ is of
+	bounded variation.\smallskip
+	
+	$\bullet$ It is known for $ I=[a,b] $ 
+	and $ f\in\mathrm{BV}(a,b) $,
+	then $ V_f $ is differentiable almost everywhere on
+	$ [a,b] $. 
+\end{remark}
+
+\begin{definition}\label{definition:sobolev space for hilbert space}
+	For $ 1\leq p\leq \plus\infty $, we define the $ p $-Sobolev spaces
+	(of order 1) as the set $ W^{1,p}(I;\,\rH) $ such that
+	$ f\in W^{1,p}(I\;\,\rH)$ if and only if $ f\in \lpgeneral{I} $
+	and there exists $ g\in\lpgeneral{I} $ such that for
+	some $ t_0\in I $ we have for almost
+	every $ t\in I $ the identity
+	\begin{align*}
+		f(t)=\int_{t_0}^t g(x)\,dx.
+	\end{align*}
+\end{definition}
+
+\begin{definition}
+	For $ 1\leq p\leq \plus\infty $ and $ I=[a,b] $, we define the space 
+	$ \widetilde W^{1,p}(a,b;\rH) $ as every absolutely continuous
+	function $ f:[a,b]\ra\rH $ such that $ \prt_t V_f $
+	is in $ L^p(a,b;\,\rH) $. 
+\end{definition}
+
+\begin{definition}
+	The $ \RR $-linear space
+	of test functions in $ \rH $ over $ I $ is defined by
+	\begin{align*}
+		\rD(I;\,\rH):=\{f:I\ra\rH
+		\sep 
+		\supp f\text{ is compact and }f\text{ is smooth}\}.
+	\end{align*}
+	Here smoothness is interpreted with the Fréchet derivative. 
+\end{definition}
+
+Motivated by integration by parts, we can define
+the derivative of a measurable function weakly.
+
+\begin{definition}\label{definition:weak der}
+	We call a function $ f\in L^0(I;\,\rH) $ weakly differentiable
+	with a weak derivative $ \prt_t f\in L^0(I;\,\rH) $ if
+	and only if
+	\begin{align*}
+		\atinner{\prt_t f}{\phi}{}
+		=-\atinner{f}{\prt_t \phi}{}
+		\qquad\forall\phi\in\rD(I;\,\rH).
+	\end{align*}
+\end{definition}
+
+\begin{lemma}
+	If $ f\in L^0(I;\,\rH) $ is weakly differentiable,
+	then its weak derivative is unique.
+\end{lemma}
+\begin{proof}
+	It suffices to verify that if $ \prt_t f=0 $
+	almost everywhere on $ I $, then $ f=0 $
+	almost everywhere on $ I $. Indeed for
+	all $ \phi\in\rD(I;\,\rH) $ we have that
+	\begin{align*}
+		0
+		=\ltwoinner{\prt_t f}{\phi}
+		=-\ltwoinner{f}{\prt_t \phi}.
+	\end{align*} 
+	The upper equation can only hold if
+	and only if $ f=0 $.
+\end{proof}
+
+We will use the following lemma a couple
+of times during this paper.
+
+\begin{lemma}\label{lemma:bnd wk der and str conv fun imply wk conv of wk der}
+	Let $ (f_n)_{n\in\NN}\subseteq L^2(I;\,\rH) $ 
+	be a sequence of weakly differentiable functions,
+	such that $ f_n\ra f $ in $ L^2(I;\,\rH) $
+	for some $ f\in L^2(I;\,\rH) $ and the
+	sequence $ (\normltwoat{\prt_t f}{I})_{n\in\NN} $
+	is bounded. Then $ f $ is weakly
+	differentiable and $ \prt_t f_n\ha \prt_t f $
+	in $ L^2(I;\,\rH) $.
+\end{lemma}
+\begin{proof}
+	As $ (\normltwoat{\prt_t f}{I})_{n\in\NN} $
+	is bounded we have up to passing to some
+	subsequence that
+	$ \prt_t f_n\ha g $ in $ L^2(I;\,\rH) $
+	for some $ g\in L^2(I;\,\rH) $.
+	For any $ \phi\in\rD(I;\,rH) $ we compute
+	\begin{align*}
+		\inner{g}{\phi}
+		=\lim_{n\ra\plus\infty}\inner{\prt_t f_n}{\phi}
+		=\lim_{n\ra\plus\infty}\inner{f_n}{-\prt_t \phi}
+		=\inner{f}{-\prt_t \phi}.
+	\end{align*}
+	As the weak derivative is unique, it is not necessary
+	to pass to some weakly convergent subsequence and instead
+	we have that $ \prt_t f_n\ha \prt_t f $ in $ L^2(I;\,\rH) $.
+\end{proof}
+
+If $ I=[a,b] $, then the Sobolev space 
+$ W^{1,p}(a,b;\,\rH) $, the space
+$ \widetilde W^{1,p}(a,b;\rH) $ and the
+weak derivative share the following
+relation.
+
+\begin{proposition}\label{proposition:rel betw sob abs cont weak der}
+	Let $ I=[a,b] $, let $ 1\leq p\leq\plus\infty $
+	and let $ f:I\ra\rH $ be a function. Then
+	the following are equivalent.
+	\begin{enumerate}[label=(\roman*)]
+		\item The map $ f $ is in $ W^{1,p}(a,b;\,\rH) $.
+		\item The function $ f $ is in $ \widetilde W^{1,p}(a,b;\,\rH) $
+		and $ f $ is differentiable almost everywhere on $ (a,b) $.
+		\item For every $ x\in\rH $ the mapping 
+		$ [a,b]\ra\RR;\,t\mapsto\inner{x}{f(t)} $ is 
+		absolutely continuous, the function $ f $
+		is weakly differentiable and the weak derivative
+		$ \prt_t f $ is in $ L^p(a,b;\,\rH) $.
+	\end{enumerate}
+\end{proposition}
+
+\subsection{Homogeneous Gradient Flow}
+
+This section will focus on the ordinary differential equation
+\begin{align}\label{equation:hom GSD}\tag{hGSD}
+	\begin{cases}
+		\partial_t u+Au \ni 0 & \text{ on }I,\\
+		u=u_0 & \text{ on }\{0\}
+	\end{cases}
+\end{align}
+with $ I=(0,\plus\infty) $ or $ I=(0,T] $ for some $ T>0 $.
+We call this ODE the homogenous generalised 
+steepest descent \ref{equation:hom GSD} equation, for 
+some maximal monotone multivalued operator $ A $
+on $ \rH $ and initial value $ u_0\in\rH $. We call the
+equation \ref{equation:hom GSD} a homogenous 
+steepest descent equation if we have an identity instead of an inclusion
+on $ I $.
+Note that the derivative $ \prt_t $ in \ref{equation:hom GSD} should be
+interpreted as a weak derivative. We say that a 
+function $ u:I\ra\rH $ is a solution to the 
+\ref{equation:hom GSD} equation with operator $ A $
+and initial value $ u_0 $ on $ I $ if it satisfies the 
+associated equations\footnote{Note we implicitly must have $ u(t)\in D(A) $
+for all $ t\in I $.}. We prove that there always
+exists a solution to the \ref{equation:hom GSD}, provided
+the initial value is in the domain of the operator. 
+At the end of this section we will be able to generalize
+the solutions, by picking their initial value 
+to be in the closure of the domain. We do this by introducing
+the semi-group of contractions generated by a maximally 
+monotone multivalued operator.\medskip
+
+For the remainder of this section, we set $ A $ to 
+be a maximal monotone multivalued operator on $ \rH $.\medskip
+
+We begin by proving the existence of a unique solution to
+the \ref{equation:hom GSD} equation when the
+initial value is in the domain of the associated maximal
+monotone multivalued operator.
+
+\begin{theorem}\label{theorem:existence of hom gf}
+	For any $u_0\in D(A)$ there exists a solution $ u $
+	in $ C^0(0,\plus\infty;\,\rH) $ to the 
+	\ref{equation:hom GSD} equation with operator $ A $
+	and initial value $ u_0 $ on $ [0,\plus\infty) $.
+	The solution satisfies the following properties
+	\begin{enumerate}[label=(\roman*)]
+		\item The weak derivative $ \partial_t u $ is in $ \linfnn $ with upper
+		bound $\norminf{\partial_t u}\leq\norm{A_0 u_0}$.
+		\item The right derivative $ \partial_t^+ u $ exists and 
+		is monotonically decreasing in its norm,
+		right continuous and satisfies 
+		the equation $\partial_t^+ u+A_0 u = 0$.
+	\end{enumerate}
+\end{theorem}
+
+The proof of this theorem uses a theorem
+from Brézis \cite[Theorem 1.6]{brezis1973ope}.
+
+\begin{theorem}\label{theorem:stab prop}
+	{\fontfamily{cmr}\selectfont(Special Version)}
+	Let $ E $ be a Banach space and
+	$ C\subseteq E $ a convex closed subset with a $ 1 $-Lipschitz
+	mapping $ J:C \ra E $. For any $ \lambda>0 $ and $ T>0 $ 
+	let $ u $ be a solution of the 
+	ordinary differential equation
+	\begin{align*}
+		\partial_t u+ \frac{1}{\lambda}(u-Ju)=0
+		\qquad\text{ on }[0,T].
+	\end{align*} 
+	Then the mapping $ \norm{\prt_t u} $ 
+	is monotonically decreasing.
+\end{theorem}
+
+\begin{proof}[proof of Theorem \ref{theorem:existence of hom gf}]
+	We will show the existence of a solution by approximating
+	the \ref{equation:hom GSD} with the Yosida 
+	approximation\footnote{see definition \ref{definition:Yosida Approximation}}
+	$ A_\lambda $ of $ A $ for any $ \lambda > 0$. Then the proposition 
+	\ref{proposition:prop of Yos app}
+	states that the map $ A_\lambda $ is $ \lambda^{-1} $-Lipschitz. 
+	Thus by the Picard-Lindelöf Theorem 
+	(cf. \cite[Theorem 7.3]{brezis2011functional})
+	for any $ T>0 $
+	the \ref{equation:hom GSD} with operator $ A_\lambda $
+	and initial value $ u_0 $ on $ [0,T] $ possesses a unique 
+	solution $ u_\lambda $ in $ C^1(0,\plus\infty;\,\rH) $. From theorem 
+	\ref{theorem:res is proj in limit and dom is conv}
+	we know that $ \overline{D(A)} $ is convex.
+	Then we can use 
+	use proposition \ref{proposition:prop of Yos app} and theorem 
+	\ref{theorem:stab prop} with $ J=\res_\lambda $, 
+	$ C=\overline{D(A)} $ and $ E=\rH $ to deduce the following
+	stability property
+	\begin{align}\label{eq2:theorem:existence of hom gf}
+		\norm{\partial_t u_\lambda}
+		=\norm{A_\lambda u_\lambda}
+		\leq \norm{A_\lambda u_0}
+		\leq \norm{A_0 u_0}.
+	\end{align}
+	We show that $ (u_\lambda)_{\lambda >0} $ 
+	is a Cauchy sequence in $ \cts $. 
+	Indeed from the \ref{equation:hom GSD} equation 
+	we get for all $ \lambda,\mu >0 $
+	\begin{align}\label{eq1:theorem:existence of hom gf}
+		\partial_t u_\lambda+A_\lambda u_\lambda
+		-\partial_t u_\mu-A_\mu u_\mu
+		=0.
+	\end{align}
+	Note we have an identity instead of an inclusion, since $ A_\lambda $ and $ A_\mu $ are single valued. By taking the the inner product of 
+	(\ref{eq1:theorem:existence of hom gf}) 
+	with $ u_\lambda-u_\mu $ we compute an upper bound
+	\begin{align}\label{equation:proof exist hom sol to GF 1}
+		\begin{split}
+			\partial_t\, \frac{1}{2}\norm{u_\lambda-u_\mu}^2
+			&=-\inner{A_\lambda u_\lambda-A_\mu u_\mu}{u_\lambda-u_\mu}\\
+			&=-\lambda \inner{A_\lambda u_\lambda-A_\mu u_\mu}{A_\lambda u_\lambda}
+			+\mu \inner{A_\lambda u_\lambda-A_\mu u_\mu}{A_\mu u_\mu}\\
+			&\qquad	-\inner{A_\lambda u_\lambda-A_\mu u_\mu}
+			{\res_\lambda u_\lambda-\res_\mu u_\mu}\\
+			&\leq -\lambda \norm{A_\lambda u_\lambda}^2
+			-\mu \norm{A_\mu u_\mu}^2
+			+(\lambda+\mu)\inner{A_\lambda u_\lambda}{A_\mu u_\mu}\\
+			&\leq (\lambda+\mu)\inner{A_\lambda u_\lambda}{A_\mu u_\mu}\\
+			&\leq (\lambda+\mu)\norm{A_\lambda u_\lambda}\norm{A_\mu u_\mu}\\
+			&\leq (\lambda+\mu)\norm{A_0 u_0}^2.
+		\end{split}
+	\end{align}
+	Note we used remark \ref{remark:triv prop yos app} in the first inequality
+	paired with the monotonicity of $ A $,
+	the Cauchy-Schwarz inequality in the penultimate inequality and 
+	we used (\ref{eq2:theorem:existence of hom gf}) in the last inequality.
+	By integrating (\ref{equation:proof exist hom sol to GF 1}) we get
+	\begin{align*}
+		\norm{u_\lambda(t)-u_\mu(t)}
+		\leq \sqrt{2\,(\lambda + \mu)\,t}\norm{A_0 u_0}
+		\qquad\forall t\in[0,T].
+	\end{align*}
+	Then $ (u_\lambda)_{\lambda>0} $ is a Cauchy-sequence
+	in the Banach space $ \cts $ with a limit 
+	$ u\in \cts $ and convergence estimate
+	\begin{align}\label{eq3:theorem:existence of hom gf}
+		\norm{u_\lambda(t)-u(t)}
+		\leq \sqrt{\lambda\, t}\norm{A_0 u_0}
+		\qquad\forall t\in[0,T].
+	\end{align}
+	To show that $ u $ is the desired solution, we must
+	prove it's range is in $ D(A) $, its weak derivative exists
+	and satisfies the stated \ref{equation:hom GSD} 
+	equation and $ u $ also fulfils properties (i) and (ii).\smallskip
+	
+	We begin by showing $ u $ has a range in $ D(A) $.
+	Then by equation (\ref{eq2:theorem:existence of hom gf}) 
+	and (\ref{eq3:theorem:existence of hom gf}) 
+	the sequence $ (\res_\lambda u_\lambda)_{\lambda >0} $
+	converges uniformly towards $ u $ in $ \cts $ since
+	\begin{align}\label{eq4:theorem:existence of hom gf}
+		\begin{split}
+			\norm{u - \res_\lambda u_\lambda}
+			&\leq \norm{u - u_\lambda}
+			+ \norm{u_\lambda - \res_\lambda u_\lambda}\\
+			&= \norm{u - u_\lambda}
+			+ \lambda \norm{A_\lambda u_\lambda}\\
+			&\leq (\sqrt{\lambda\, t} + \lambda)\norm{A_0 u_0}
+		\end{split}
+		\qquad\text{on }[0,T].
+	\end{align}
+	If we focus on a fixed time $ t\in[0,T] $,
+	then we can deduce that $ u(t)\in D(A) $. Indeed
+	by equation \eqref{eq2:theorem:existence of hom gf} we
+	have that
+	$\norm{A_\lambda u_\lambda}$ is bounded from above by $\norm{A_0 u_0} $
+	as $ \lambda \se 0$.
+	Thus there exists a weakly convergent subsequence
+	$ A_{\lambda_{n}}u_{\lambda_{n}}\ha y $ for some $ y\in\rH $.
+	Since $ \res_{\lambda_n} u_{\lambda_n} \ra u $ by 
+	\eqref{eq4:theorem:existence of hom gf}
+	and $ A_{\lambda_{n}}u_{\lambda_{n}}\ha y $ we have 
+	from lemma \ref{lemma:weak seq cond}
+	that $ (u,y)\in A $, moreover of particular interest
+	to us is $ u(t)\in D(A) $ and 
+	$ \norm{y}\leq \norm{A_0 u_0} $. 
+	We will need at the very end of this proof a consequence of this
+	result, namely that
+	\begin{align}\label{eq5:theorem:existence of hom gf}
+		\norm{A_0 u}\leq\norm{A_0 u_0} 
+		\qquad\text{on }[0,\plus\infty).
+	\end{align}
+	
+	Next we show that $ u $ is weakly differentiable and
+	satisfies both the \ref{equation:hom GSD} equation and property $ (i) $.
+	By \eqref{eq2:theorem:existence of hom gf} we know that
+	the sequence $ \norm{\prt_t u_\lambda} $ is bounded 
+	by $ \norm{A_0 u_0} $ as $ \lambda\se 0 $.
+	Thus there exists some weakly converging subsequence 
+	$ \prt_t u_{\lambda_n}\ha v $ in $ \linf $ 
+	for some $ v\in\linf$. Note that $\linf\subseteq \ltwo $. 
+	From lemma \ref{lemma:bnd wk der and str conv fun imply wk conv of wk der}
+	we have that
+	$ v $ is the weak derivative of $ u $ 
+	with $ \prt_t u_{\lambda}\ha v $ in $ \ltwo $ whenever $ \lambda\se 0 $
+	and $ \norminf{v}\leq \norm{A_0 u_0} $. This in turn
+	proves property $ (i) $. If we use the operator $ \ltwomap $ from example
+	\ref{example:map max mon op from H to L2} we get
+	that $ (u_\lambda,-\prt_t u_\lambda)\in\ltwomap A $ for all
+	$ \lambda>0 $. We know that
+	$ u_\lambda\ra u $ in $ \cts $, and hence also 
+	$ u_\lambda\ra u $ in $ \ltwo $.
+	And we showed $ \prt_t u_\lambda\ha \prt_t u $ in $ \ltwo $.
+	Then by lemma \ref{lemma:weak seq cond} we have that 
+	$ (u,-\prt_t u)\in\ltwomap A $ or 
+	equivalently $ \prt_t u+Au\ni 0$.\smallskip
+	
+	It remains to justify the claim $ (ii) $.
+	We begin by showing that the function $ A_0 u $ is right continuous
+	at the point $ 0 $. Then from equation \eqref{eq2:theorem:existence of hom gf} 
+	as $ \norm{A_\lambda u_\lambda}$ bounded from above  by $\norm{A_0 u_0} $
+	as $ \lambda \ra 0 $,
+	there exists a weakly converging subsequence 
+	$ A_0 u(t_n)\ha \xi$ for some $\xi\in\rH $.
+	As $ u $ is continuous we have the converging sequence $ u(t_n)\ra u(0) $
+	and $ (u(t_n), A_0 u(t_n))\in A $. So
+	by lemma \ref{lemma:weak seq cond} we know $ (u_0,\xi)\in A $
+	and $ \norm{\xi}\leq \norm{A_0 x} $
+	and thus by definition of the minimum norm section 
+	$ \xi=A_0 u_0 $. As we have considered any convergent
+	subsequence, we see that $ u $ is right continuous at $ 0 $
+	with limit $ A_0 u(t)\ra A_0 u_0 $ as $ t\se 0 $.\smallskip
+	
+	We define the set  
+	$ E:=\{t\in(0,\plus\infty)\sep u\text{ is differentiable in }t\text{ and }
+	\prt_t u(t)\in Au(t) \}$. As $ u $ is Lipschitz, it has bounded
+	variation. From proposition 
+	\ref{proposition:rel betw sob abs cont weak der} 
+	we know that the complement of $ E $ is a null-set.
+	For all $ t_0,h>0 $ we have that 
+	$ \norm{u(t_0)-u(t_0+h)}\leq h\norm{A_0 u(t_0)} $. Thus if
+	$ t_0\in E $ we have that $ \norm{\prt_t u(t_0)}\leq \norm{A_0 u(t_0)} $,
+	but by definition of the minimum norm section we have that
+	$ \prt_t (t_0)+A_0 u(t_0)=0 $. If we integrate on $ (0,t) $
+	we get that $ u(t)-u(0)=\int_0^t A_0u\,dt $.
+	As $ A_0 u $ is right continuous at $ 0 $, we quickly
+	deduce from the integral that $ u $ is right differentiable
+	at $ 0 $ with $ \prt_t^+ u(0)+A_0 u_0=0 $. Lastly 
+	note that $ [0,\plus\infty)\ra\rH\;t\mapsto u(t_0+t) $
+	is a solution to the \ref{equation:hom GSD} equation
+	with operator $ A $ and initial value $ u(t_0) $
+	on $ [0,\plus\infty) $. Thus we have 
+	by equation \eqref{eq5:theorem:existence of hom gf} that
+	$ \norm{\prt_t^+ u(t_0+t)}=\norm{A_0 u(t_0+t)}
+	\leq \norm{A_0 u(t_0)}=\norm{\prt_t^+ u(t_0)} $.
+	This shows that $ \prt_t^+ u $ is monotonically
+	decreasing in the norm and thus ends
+	the proof of the theorem.\smallskip
+\end{proof}
+
+\begin{corollary}\label{corollary:sol of hgsd are contr}
+	Let $ v_0\in D(A) $ be another initial value. Then for the
+	solutions $ u$ and $v $ to the \ref{equation:hom GSD} 
+	equation with operator $ A $ and initial value $ u_0$ and $v_0 $
+	respectively on the interval $ [0,\plus\infty) $, we have that
+	the function $ \norm{u-v} $ is monotonically decreasing.
+	As a consequence the solutions to the \ref{equation:hom GSD} 
+	equations are unique.
+\end{corollary}
+\begin{proof}
+	We show that the function $ \norm{u-v} $ is 
+	monotonically decreasing by computing the weak derivative
+	and using the monotonicity of $ A $
+	\begin{align*}
+		\partial_t\, \frac{1}{2}\norm{u-v}^2
+		=\inner{\partial_t u- \partial_t v}{u-v}
+		=-\inner{A u- A v}{u-v}
+		\leq 0.
+	\end{align*}
+	In case $ u_0=v_0 $, we must have that
+	$ u=v $ on all of $ [0,\plus\infty) $, which shows
+	uniqueness.
+\end{proof}
+
+We will show a bit later, that the initial values
+of the solutions to the 
+\ref{equation:hom GSD} equation can in fact 
+be chosen in the closure
+of the domain of the maximally monotone operator.
+But first we show some examples of solutions
+to the \ref{equation:hom GSD} equation.
+
+\begin{example}
+	Define the multivalued operator $ A $ on $ \RR $ as
+	in example \ref{exampel:mon R funct op} with the
+	function $ f:\RR\ra\RR $ defined as the heavyside function
+	\begin{align*}
+		f(t):=\begin{cases}
+			1 & \text{if } t \geq 0,\\
+			0 & \text{if } t < 0
+		\end{cases}
+		\qquad \forall t\in\RR.
+	\end{align*}
+	For $ u_0\in\RR $ the unique solution of the \ref{equation:hom GSD}
+	equation with operator $ A $ and initial value $ u_0 $ on $ [0,\plus\infty) $
+	is given by
+	\begin{itemize}
+		\item The constant mapping $ u=u_0 $, provided if $ u_0\leq 0 $.
+		\item The affine map $ u=u_0-t $ on $ [0, u_0] $
+		and constant map $ u=0 $ on $ (u_0,\infty) $, provided if $ u_0>0 $.
+	\end{itemize}
+\end{example}
+
+\begin{example}
+	Let $ \rH $ be a finite dimensional $ \RR $-Hilbert space
+	and $ A $ a positive semi-definite linear operator on $ \rH $.
+	By example \ref{example:sem pos def lin op is max mon} the operator $ A $
+	is maximally monotone. Then the unique solution to 
+	\ref{equation:hom GSD} equation with operator $ A $ and initial 
+	value $ u_0 $ on $ [0,\plus\infty) $ is given by $ u=\exp(-At)u_0 $.
+	As the eigenvalues of $ A $ are real and non-negative,
+	the entries of the solution $ u $ with respect to any finite
+	basis, converge exponentially to some constant value. In case
+	$ A $ is positive definite, the entries converge to $ 0 $.
+\end{example}
+
+\begin{example}\label{example:hom GSD on l2 with der}
+	Use the same $ \RR $-Hilbert space $ \rH=W^{1,2}(0,\rL;\,\rK) $
+	and maximally monotone operator $ A=\prt_x $ as
+	in example \ref{example:spat der of W is max mon}.
+	Set any value $ u_0\in\rK $ as the initial condition
+	in the domain $ D(A) $ and let $ g\in D(A) $
+	be arbitrary. We can represent the solution
+	$ u $ to the \ref{equation:hom GSD} equation with
+	maximally monotone mulitvalued operator $ A $
+	and initial value $ u_0 $ on $ [0,\plus\infty) $ as a function
+	$ u\in W^{1,2}(\Omega;\,\rK) $
+	with $ \Omega:=[0,\plus\infty)\times [0,\rL] $.
+	Then the \ref{equation:hom GSD} equation reads
+	as the PDE
+	\begin{align*}
+		\begin{cases}
+			\partial_t u+\partial_x u = 0 & \text{ on }(0,\plus\infty)\times[0,\rL],\\
+			u=g & \text{ on }\{0\}\times[0,\rL].
+		\end{cases}
+	\end{align*}
+	This is however just the transport equation and has
+	solution 
+	\begin{align*}
+		u(t,x)=\begin{cases}
+			g(x-t) & \text{if }x\leq t,\\
+			u_0 & \text{otherwise}
+		\end{cases}
+		\qquad\forall (t,x)\in\Omega.
+	\end{align*}
+\end{example}
+
+The solutions of the $ \ref{equation:hom GSD} $ equation
+can be described by flows of a multivalued stable vector field
+on the domain of a maximally monotone operator. 
+In fact as the solutions are unique, we may assume that the vector
+field is single valued. This
+motivates the definition of a family of solution operators, which
+shares a semi-group structure (or more accurately an abelian monoid structure).
+
+\begin{definition}\label{definition:semi group of contractions}
+	For all $ t\geq 0 $ define the mapping
+	$ \tilde S(t):D(A) \ra \overline{D(A)} $ that sends
+	$ u_0\in D(A) $ to $ u(t) $, where $ u $ is the solution to the 
+	\ref{equation:hom GSD} equation with operator $ A $
+	and initial value $ u_0 $ on $ [0,\plus\infty) $.
+	Let $ S(t):\overline{D(A)} \ra \overline{D(A)} $
+	be the continuous extension of the map $ \tilde S(t) $ 
+	to the closure of the domain
+	of $ A $. The family of maps $ (S(t))_{t\geq 0} $ is called 
+	the semi-group of contractions generated by $ A $.
+\end{definition}
+
+\begin{corollary}\label{lemma:prop of semi grp contr}
+	The semi-group $ (S_t)_{t\geq 0} $ of contractions generated by $ A $ satisfies
+	\begin{enumerate}[label=(\roman*)]
+		\item At $ 0 $ we have $ S(0)=\idm_{\overline{D(A)}} $.
+		\item For all $ t_1, t_2\geq 0 $ we have
+		the homomorphic relation
+		$ S(t_1+t_2)=S(t_1)S(t_2) $.
+		\item The family $ (S(t))_{t\geq 0} $ is right continuous at $ 0 $,
+		i.e. we observe $ \norm{S(t)u_0 - u_0} \ra 0 $ whenever $ t \ra 0 $ 
+		for all $ u_0\in \overline{D(A)} $.
+		\item The family of maps are contractions, that is to say 
+		$ \norm{S(t)u_0 - S(t)v_0}\leq \norm{u_0 - v_0} $ for
+		all $ u_0,v_0\in\overline{D(A)}$ and $ t\geq 0 $.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	Claims $ (i) $ and $ (ii) $ follow directly from the definition.
+	The property $ (iii) $ is a consequence of the
+	right differentiability of the solutions as stated in
+	theorem \ref{theorem:existence of hom gf}. The attribute 
+	$ (iv) $ results directly from 
+	corollary \ref{corollary:sol of hgsd are contr}.
+\end{proof}
+
+\begin{corollary}\label{corollary:yos app of sem grp of contr conv}
+	Let $ u_0\in \overline{D(A)} $ be any initial value.
+	Let $ (S(t))_{t\geq 0} $ be the semi-group 
+	of contractions generated by
+	$ A $. Define $ u(t):=S(t)u_0 $ for all
+	$ t\geq 0 $. Let $ u_\lambda $ be the
+	solution to the \ref{equation:hom GSD} equation
+	with operator $ A_\lambda $ and initial
+	value $ u_0 $ on $ [0,\plus\infty) $
+	for any $ \lambda>0 $. Then for all
+	$ t>0 $ we have that $ u_\lambda(t)\ra u(t) $
+	whenever $ \lambda\se 0 $.
+\end{corollary}
+\begin{proof}
+	Note that the claim is immediately true,
+	if $ u_0\in D(A) $ as $ u $ is the 
+	pointwise limit of $ u_\lambda $
+	when $ \lambda\se 0 $, which we have shown in the
+	proof of theorem \ref{theorem:existence of hom gf}.
+	For the general case pick 
+	any value $ v_0\in D(A) $ and let
+	$ v $ and $ v_\lambda $ be the solutions 
+	to the \ref{equation:hom GSD}
+	with operators $ A $ and $ A_\lambda $ and
+	respectively and initial value $ v_0 $.
+	Then we have by corollary \ref{corollary:sol of hgsd are contr}
+	that
+	\begin{align*}
+		\lim_{\lambda\se 0}\norm{u_\lambda(t)-u(t)}
+		&\leq \lim_{\lambda\se 0}\norm{u_\lambda(t)-v_\lambda(t)}
+		+\norm{v_\lambda(t)-v(t)}
+		+\norm{v(t)-u(t)}\\
+		&\leq \lim_{\lambda\se 0}2\norm{u_0-v_0}+\norm{v_\lambda(t)-v(t)}\\
+		&\leq 2\norm{u_0-v_0}.
+	\end{align*} 
+	The claim immediately follows as $ v_0 $ can be
+	chosen arbitrarily close to $ u_0 $. 
+\end{proof}
+
+\subsection{Inhomogeneous Gradient Flow}
+
+This section will focus on the inhomogeneous generalisation
+of the \ref{equation:hom GSD} equation. Namely
+\begin{align}\label{equation:GSD}\tag{GSD}
+	\begin{cases}
+		\partial_t u+Au \ni f & \text{ on }(0,T),\\
+		u=u_0 & \text{ on }\{0\}
+	\end{cases}
+\end{align}
+which we call the inhomogenous generalised 
+steepest descent \ref{equation:GSD} equation, for 
+some maximal monotone multivalued operator $ A $
+on $ \rH $, inhomogeneous term $ f \in \lone $ and
+initial value $ u_0\in\rH $. 
+Unlike the \ref{equation:hom GSD} equation, we cannot
+directly prove the existence of a solution to the
+\ref{equation:GSD} equation. Instead we must differentiate
+between a strong and weak solution.\medskip
+
+For the remainder of this section, let $ A $ 
+be a maximal monotone multivalued operator on $ \rH $
+and let $ f\in\lone $ be any inhomogeneous term.\medskip
+
+\begin{definition}
+	We call a function $ u\in\cts $ a strong solution to the 
+	\ref{equation:GSD} equation with maximally monotone operator $ A $, 
+	inhomogeneous term $ f $ and initial value $ u_0 $, 
+	if $ u $ solves the stated ordinary differential equation, 
+	is absolutely continuous 
+	on all compact subsets of $ (0,T) $ and the range of $ u $
+	on $ (0,T) $ is contained in $ D(A) $.
+\end{definition}
+
+\begin{definition}
+	We call a function $ u\in\cts $ a weak solution to the 
+	\ref{equation:GSD} equation with maximally monotone operator $ A $, inhomogeneous
+	term $ f $ and initial value $ u_0 $, if 
+	there exists two sequences $ (u_n)_{n\in\NN}\subseteq \cts$ and 
+	$ (f_n)_{n\in\NN}\subseteq \lone $, such that 
+	$ u_n \ra u $ in $ \cts $, $ f_n\ra f $ in $\lone$ and  
+	$u_n $ is a strong
+	solution to \ref{equation:GSD}
+	with operator $ A $, inhomogeneous function $ f_n $ and
+	initial value $ u_n(0) $ for all $ n \geq 1 $.
+\end{definition}
+
+We can show an example of a strong solution to the 
+\ref{equation:GSD} equation.
+
+\begin{example}
+	Let $ A $ be a positive sem-definite linear operator
+	with dense range in $ \rH $
+	as in example \ref{example:sem pos def lin op is max mon}.
+	As $ f\in\lone $ we deduce via variation of constants that
+	a general solution to the \ref{equation:GSD} equation
+	is given by
+	\begin{align*}
+		u(t)=\exp(At)\left(u_0+\int_0^t \exp(-As)f(s)\,ds\right)
+		\qquad\forall t\in [0,T).
+	\end{align*}
+\end{example}
+
+The following lemma is fundamental for the study of \ref{equation:GSD}
+equations.
+
+\begin{lemma}\label{lemma:inequalities of weak sol}
+	Let $ g,r\in \lone $ and let $ u,v $ be strong solutions
+	to the \ref{equation:GSD} equation 
+	with operator $ A $, inhomogeneous functions $ g,r $ 
+	and initial values $ u(0),v(0) $ respectively.
+	Then for any $ 0\leq s \leq t \leq T $ and $ (\eta,\xi)\in A $
+	the following inequalities hold
+	\begin{align}
+			&\norm{u(t)-v(t)}
+			\leq \norm{u(s)-v(s)}
+			+\int_s^t \norm{g-r}\,dt,\label{eq:bound diff between two sol}\\
+			&\inner{u(t)-u(s)}{u(s)-\eta}
+			\leq \frac{1}{2}\norm{u(t)-\eta }^2-\frac{1}{2}\norm{u(s)-\eta}^2
+			\leq \int_s^t \inner{r-\xi}{u-\eta}\,dt.
+			\label{eq:bound diff from graph}
+	\end{align}
+\end{lemma}
+
+The proof of this lemma depends on the well-known lemma from
+Gronwall with many applications in ordinary differential equations.
+A proof of which can be found in Brézis
+\cite[Lemma A.5]{brezis1973ope}. 
+\begin{lemma}\label{lemma:gromwall}
+	{\fontfamily{cmr}\selectfont(Gronwall)}
+	Let $ m\in\atlp{1}{0,T}{\RR} $ be a non-negative function and $ a\geq 0 $. 
+	If the continuous function 
+	$ u\in\atcts{0,T}{\RR} $
+	satisfies
+	\begin{align*}
+		\frac{1}{2}u(t)^2\leq\frac{1}{2}a^2+\int_0^t m(s) u(s)\,ds
+		\qquad\forall t\in[0,T],
+	\end{align*}
+	then we have the inequality
+	\begin{align*}
+		\abs{u(t)}\leq a+\int_0^t m(s)\,ds
+		\qquad\forall t\in[0,T].
+	\end{align*}
+\end{lemma}
+
+\begin{proof}[proof of lemma \ref{lemma:inequalities of weak sol}]
+	As $  A $ is maximally monotone and by the \ref{equation:GSD} equation, 
+	we compute
+	\begin{align*}
+		\partial_t \frac{1}{2}\norm{u-v}^2
+		=\inner{\partial_t u-\partial_t v}{u-v}
+		=\inner{g-r}{u-v}
+		-\inner{A u- A v}{u-v}
+		\leq \inner{g-r}{u-v}.
+	\end{align*}
+	By taking the integral on $ (s,t) $ 
+	and applying the Cauchy-Schwarz inequality we get
+	\begin{align}\label{eq1:lemma:inequalities of weak sol}
+		\begin{split}
+			\frac{1}{2}\norm{u(t)-v(t)}^2
+			-\frac{1}{2}\norm{u(s)-v(s)}^2
+			&\leq \int_s^t \inner{g-r}{u-v}\,dx\\
+			&\leq \int_s^t \norm{g-r}\norm{u-v}\,dx.
+		\end{split}
+	\end{align}
+	Both estimates follow directly from 
+	\eqref{eq1:lemma:inequalities of weak sol}. Namely the bound
+	\eqref{eq:bound diff between two sol} is a result of 
+	Gronwall's lemma \ref{lemma:gromwall}, and the estimate 
+	\eqref{eq:bound diff from graph} is given by the constant 
+	solution $ v=\eta  $
+	and $ r = \xi $ for any $ (\eta,\xi)\in A $.
+\end{proof}
+
+The inequalities in lemma \ref{lemma:inequalities of weak sol}
+remain stable under convergent sequences in $ \cts\times \lone $. 
+This stability attribute justifies the following result. 
+
+\begin{corollary}
+	The bounds \eqref{eq:bound diff between two sol} and
+	\eqref{eq:bound diff from graph} in Lemma 
+	\ref{lemma:inequalities of weak sol} hold for
+	weak solutions of the \ref{equation:GSD} equation.
+\end{corollary}
+
+We proceed by proving that the \ref{equation:GSD} equation
+will always have a weak solution, provided the initial
+value $ u_0 $ is in the closure of the domain of $ A $.
+
+\begin{theorem}
+	There exists a unique weak solution for the \ref{equation:GSD} equation
+	with operator $ A $, inhomogeneous function $ f $ and any initial value
+	$ u_0\in\overline{D(A)} $.
+\end{theorem}
+\begin{proof}
+	Note that for all $ \theta \in \rH $ the multivalued operator defined
+	by $ A-\theta $ remains maximally monotone.
+	Then let $ (S^{(\theta)}(t))_{t \geq 0} $ be the semi-group of contractions
+	generated by $ A-\theta $.\smallskip
+	
+	By lemma \ref{lemma:approx by step func} there exists a sequence
+	$ (f_n)_{n\in\NN}\subseteq \lone $ of step functions
+	with $ f_n\ra f $ in $ \lone $. For $ n\geq 1 $
+	let $ f_n $ be defined by a partition $ 0=t_0<\ldots<t_m=T $
+	and values $ c_1,\ldots,c_m\in \rH $, such that $ f_n=c_k $ on almost all 
+	of $ [t_{k-1}, t_k] $ for $ 1\leq k\leq m $. Then the
+	strong solution $ u_n $ to the \ref{equation:GSD} equation
+	with operator $ A$, inhomogeneous function $ f_n $
+	and initial value $ u_0 $ is defined inductively by
+	\begin{align*}
+		u_n:=S^{(c_1)}(t)u_0\;\text{ on }\;[0,t_1]
+		\quad\text{and}\quad
+		u_n:=S^{(c_k)}(t-t_{k-1})u(x_{k-1})\;\text{ on }\;[t_{k-1},t_k]
+		\qquad\forall 1\leq k\leq m.
+	\end{align*}
+	In addition by property $ (i) $ in theorem
+	\ref{theorem:existence of hom gf} we have that
+	$ u_n $ is Lipschitz and thus absolutely continuous.
+	By the estimate \eqref{eq:bound diff between two sol} 
+	from lemma \ref{lemma:inequalities of weak sol},
+	the sequence $ (u_n)_{n\in\NN} $ forms a Cauchy sequence in
+	$ \cts $, as we have the uniform estimate
+	\begin{align*}
+		\norm{u_n-u_m}
+		\leq \int_0^T \norm{f_n-f_m}\,dt	.
+	\end{align*}
+	Then $ u_n\ra u $ in $ \cts $ for some $ u\in\cts $,
+	namely the desired weak solution.
+\end{proof}
+
+As in theorem \ref{theorem:existence of hom gf}, we can determine
+the right differentiability and Lipschitz continuity of the weak solutions of the 
+\ref{equation:GSD} equation. We will do this
+in theorem \ref{theorem:cond weak sol to inhom gf is r diff}. 
+For the statement we will require
+the following definition and lemma
+
+\begin{definition}
+	A point $ t_0\in [0,T] $ is called a right Lebesgue point of $ g\in\lone $,
+	if we have
+	\begin{align*}
+		\limsup_{t \se t_0} \frac{1}{t-t_0}\int_{t_0}^t \norm{g-g(t_0)}\,dt
+		=0.
+	\end{align*}
+	In that case we set
+	\begin{align*}
+		M_r g(t_0)
+		:=\lim_{t \se t_0} \frac{1}{t-t_0}\int_{t_0}^t g\,dt.
+	\end{align*}
+\end{definition}
+
+\begin{lemma}\label{lemma:weak sol in dom}
+	Let $ u $ be a weak solution of the \ref{equation:GSD}
+	equation, let $ C>0 $ be a constant and let
+	$ t_0\in [0,T] $ be some time and $ \alpha,\beta\in\rH $
+	be some values. If a sequence
+	$ (t_n)_{n\in\NN}\subseteq [0,T]\setminus\{t_0\} $
+	that converges to $ t_0 $ satisfies
+	\begin{align*}
+		\frac{u(t_n)-u(t_0)}{t_n-t_0} \ha \alpha\quad\text{ and }\quad
+		\frac{1}{t_n-t_0}\int_{t_0}^{t_n} f\,dt \ha \beta\quad\text{ and }\quad
+		\frac{1}{\abs{t_n-t_0*}}\int_{t_0}^{t_n} \norm{f}\,dt <C
+	\end{align*}
+	when $ n\ra\plus\infty $,
+	then $u(t_0)\in D(A)$ and $\beta - \alpha \in Au(t_0)$.
+\end{lemma}
+
+\begin{proof}
+	We use the bound (\ref{eq:bound diff from graph}) from lemma
+	\ref{lemma:inequalities of weak sol}. Then for all $(\eta, \xi)\in A$
+	and all $0\leq s\leq t\leq T$ we have
+	\begin{align*}
+		\inner{u(t)-u(s)}{u(s)-\eta}
+		\leq \int_0^T \inner{f-\xi}{u-\eta}\,dt.
+	\end{align*}
+	Depending on the order we replace the terms $ s,t $ with 
+	$ t_n,t_0 $ and divide with $ \pm(t_0-t_n) $.
+	We differentiate between two cases, namely if $t_0< t_n$ then
+	\begin{align*}
+		\inner{\frac{u(t_n)-u(t_0)}{t_n-t_0}}{u(t_0)-\eta}
+		\leq \frac{1}{t_n-t_0}\int_{t_0}^{t_n} \inner{f-\xi}{u-\eta}\,dt
+	\end{align*}
+	and if $t_n< t_0$ then
+	\begin{align*}
+		\inner{\frac{u(t_0)-u(t_n)}{t_0-t_n}}{u(t_n)-\eta}
+		\leq \frac{1}{t_0-t_n}\int_{t_n}^{t_0} \inner{f-\xi}{u-\eta}\,dt.
+	\end{align*}
+	As $ u $ is continuous, in either case if we take the limit 
+	$n\ra \plus\infty$ we see that
+	\begin{align*}
+		\inner{\alpha}{u(t_0)-\eta}\leq \inner{\beta-\xi}{u(t_0)-\eta}
+		\qimplies
+		0\leq \inner{\beta-\alpha-\xi}{u(t_0)-\eta}.
+	\end{align*}
+	As $(\eta,\xi)\in A$ is arbitrary, by condition 
+	\eqref{eq1:remark:char graph el} 
+	we must have $ (u(t_0),\, \beta-\alpha)\in A $, proving the claim.
+\end{proof}
+
+We are now ready to state criteria for when the weak solution
+of the \ref{equation:GSD} is right differentiable.
+
+\begin{theorem}\label{theorem:cond weak sol to inhom gf is r diff}
+	Let $ u $ be a weak solution of the \ref{equation:GSD}
+	equation. Suppose that $ t_0\in[0,T) $ is a right Lebesgue point of
+	$f$. Then the following are equivalent
+	\begin{enumerate}[label=(\roman*)]
+		\item The point $ u(t_0) $ is contained in $ D(A) $.
+		\item We have 
+		$ \liminf_{t \se t_0}\,\frac{1}{t-t_0}\norm{u(t)-u(t_0)} < \plus\infty$.
+		\item The function $ u $ is right differentiable at $ t_0 $.
+	\end{enumerate}
+	In this case we also have a formula for the right derivative
+	\begin{align*}
+		\partial_t^+ u(t_0)
+		=M_rf(t_0)-\pr_{Au(t_0)} M_rf(t_0).
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	"$ (i)\Rightarrow(iii) $": 
+	As $ t_0 $ is a right Lebesgue point of $ f $,
+	there exists $ C\geq 0 $ such that for $ n\geq 1 $ we have
+	\begin{align*}
+		\limsup_{h\se 0}
+		\frac{1}{h}\int_{t_0}^{t_0+h}f\,dt
+		=M_rf(t_0),
+		\qquad \limsup_{h\se 0}
+		\frac{1}{\abs{h}}\int_{t_0}^{t_0+h}\abs{f}\,dt
+		<C.
+	\end{align*}The constant function
+	$ v=u(t_0) $ is a solution to the \ref{equation:GSD}
+	equation with operator $ A $, the constant
+	inhomogeneous term $ g=\pr_{Au(t_0)} M_rf(t_0) $
+	and initial value $ u(t_0) $. If we use equation
+	\eqref{eq:bound diff between two sol}, then we get
+	an estimate for all $ h>0 $ by
+	\begin{align*}
+		\norm{u(t_0+h)-u(t_0)}
+		\leq \int_{t_0}^{t_0+h}
+		\norm{f(s)-\pr_{Au(t_0)} M_rf(t_0)}\,ds.
+	\end{align*}
+	If we divide by $ h $ and take limit we see by the triangle
+	inequality and the definition of $ M_r $ that
+	\begin{align*}
+		\limsup_{h \se 0}\,&\frac{\norm{u(t_0+h)-u(t_0)}}{h}\\
+		&\leq 
+		\limsup_{h \se 0}\frac{1}{h}\int_{t_0}^{t_0+h}
+		\norm{f(s)-\pr_{Au(t_0)} M_rf(t_0)}\,ds\\
+		&= \limsup_{h \se 0}\frac{1}{h}\int_{t_0}^{t_0+h}
+		\norm{f(s)-M_rf(t_0)+M_rf(t_0)-\pr_{Au(t_0)} M_rf(t_0)}\,ds\\
+		&\leq \norm{M_rf(t_0)-\pr_{Au(t_0)} M_rf(t_0)}.
+	\end{align*}
+	There hence exists a null-sequence $ h_n\se 0 $ such that 
+	$ h_n^{-1}(u(t_0+h_n)-u(t_0)) $ weakly converges to
+	some $ \alpha\in\rH $ with
+	\begin{align}\label{eq1:cond weak sol to inhom gf is r diff}
+		\norm{\alpha}
+		\leq \norm{M_rf(t_0)-\pr_{Au(t_0)} M_rf(t_0)}.
+	\end{align} 
+	The conditions of lemma \ref{lemma:weak sol in dom} hold
+	and thus $ M_r f(t_0)-\alpha\in Au(t_0) $. But
+	by the inequality in \eqref{eq1:cond weak sol to inhom gf is r diff}
+	we must have that $ \alpha=M_rf(t_0)-\pr_{Au(t_0)} M_rf(t_0) $
+	and thus $ u $ is right differentiable at $ t_0 $.\medskip
+	
+	"$(iii)\Rightarrow(ii)$": Immediate.\medskip
+	
+	"$(ii)\Rightarrow(i)$": The proof is very
+	similar to the proof of $ "(i)"\Rightarrow"(iii)" $.
+\end{proof}
+
+\begin{proposition}\label{proposition:gsd sol is lipschitz}
+	Let $ g\in \bv $ and $ u $ a weak solution to the
+	\ref{equation:GSD} equation with operator $ A $,
+	inhomogeneous term $ g $ and initial value $ u_0 $.
+	Then the following properties are equivalent 
+	\begin{enumerate}[label=(\roman*)]
+		\item The initial value $ u_0 $
+		is in the domain of $ A $, i.e. $ u_0\in D(A) $.
+		\item The solution $ u $ is Lipschitz continuous.
+	\end{enumerate}
+	In that case the range of $ u $ is contained in the domain
+	of $ A $, the map $ u $ is right differentiable in $ [0,T) $
+	with right derivative
+	\begin{align}\label{equation:right der of Lip sol}
+		\prt_t^+ u(t_0)=M_rg(t_0)-\pr_{Au(t_0)} M_rg(t_0)
+		\qquad\forall t_0\in [0,T).
+	\end{align} 
+	If $ g\in W^{1,1}(0,T;\,\rH) $ then 
+	for any $ 0\leq s\leq t< T $ the following
+	inequality holds true
+	\begin{align}\label{equation:bound right der}
+		\norm{\prt_t^+ u(t)}
+		\leq \norm{\prt_t^+ u(s)}+\int_s^t \norm{\prt_t g} ds.
+	\end{align}
+\end{proposition}
+\begin{proof}
+	"$ (i)\Rightarrow(ii) $": If $ u_0\in D(A) $
+	we know from theorem \ref{theorem:cond weak sol to inhom gf is r diff}
+	that $ u $ is right differentiable in $ 0 $.
+	If we define $ r(t):=g(t+h) $ and $ v(t):=u=(t+h) $
+	for all $ t\in [0,T-h] $, we have by equation
+	\eqref{eq:bound diff between two sol} from 
+	lemma \ref{lemma:inequalities of weak sol} that
+	\begin{align}\label{eq1:gsd sol is lipschitz}
+		\norm{u(t+h)-u(t)}
+		\leq \norm{u(h)-u_0}+\int_0^t \norm{g(s+h)-g(s)}\,ds
+		\qquad\forall t\in(0,T-h).
+	\end{align}
+	Since $ u $ is right differentiable at $ 0 $
+	and as $ g $ is of bounded variation on $ [0,T] $, 
+	there exists a constant $ C>0 $ such that 
+	for $ h $ sufficiently small, we have that
+	\begin{align*}
+		\norm{u(t+h)-u(t)}
+		\leq Ch.
+	\end{align*}
+	
+	"$ (ii)\Rightarrow(i) $": Since $ g $
+	is of bounded variation on $ [0,T] $
+	we know that $ g\in\lone $
+	and almost every point in $ [0,T) $
+	is a right Lebesgue point of $ g $. As $ u $
+	is Lipschitz continuous, the condition $ (ii) $ of theorem
+	\ref{theorem:cond weak sol to inhom gf is r diff}
+	is satisfied at every point of $ [0,T) $ and thus 
+	the range of $ u $ is in the domain of $ A $
+	on $ [0,T) $ and $ u $ is right differentiable
+	on $ [0,T) $ with right derivative
+	\begin{align*}
+		\prt_t^+(t_0) u=M_rg(t_0)-\pr_{Au(t_0)} M_rg(t_0)
+		\qquad\forall t_0\in [0,T).
+	\end{align*} 
+	Since $ u $ is Lipschitz continuous and $ g $ is of
+	bounded variation on $ [0,T] $, we have have
+	that both $ \norm{\prt_t^+ u} $ and $ g(t) $ are bounded from above
+	when $ t\nearrow T $.
+	But then by definition
+	of the right derivative of $ u $ in 
+	\eqref{equation:right der of Lip sol}
+	we see that $ M_rg(t)-\prt_t^+ u(t)=\pr_{Au(t)} M_rg(t)\in Au(t) $
+	is also bounded in norm when $ t\nearrow T $.
+	There hence exists a convergent subsequence
+	$ M_rg(t_n)-\prt_t^+ u(t_n)\ha y $ for some
+	$ y\in\rH $. Since $ u(t_n)\ra u(T) $ 
+	and the range of $ u $
+	is contained in the domain of $ A $
+	on $ [0,T) $, we see by lemma 
+	\ref{remark:triv prop yos app} that $ u(T)\in D(A) $.
+	\smallskip
+	
+	If $ g\in\woneone $, then if we divide
+	equation \eqref{eq1:gsd sol is lipschitz}
+	by $ h $ and take the limit $ h\se 0 $
+	we verify the stated equation \eqref{equation:bound right der},
+	that is for all $ 0\leq s\leq t<T $ we have
+	\begin{align*}
+		\norm{\prt_t^+ u(t)}
+		\leq \norm{\prt_t^+ u(s)}+\int_s^t \norm{\prt_t g} ds.
+	\end{align*}
+\end{proof}
+%	From this equation we deduce for any $ t_0\in[0,T) $ that 
+%	\begin{align*}
+%		\limsup_{t\se t0}\norm{\prt_t^+ u(t)}
+%		\leq \norm{\prt_t^+ u(t_0)}.
+%	\end{align*}
+%	As $\norm{\prt_t^+ u(t)}$ is bounded from above
+%	by $\norm{\prt_t^+ u(t_0)}$ when $ t\se t_0 $,
+%	we see exactly analogue as in
+%	the proof of $ "(ii)\Rightarrow(i)" $
+%	that there exists a weakly converging
+%	subsequence $ \prt_t^+ u(t_n)\ha y $
+%	for some $ y\in\rH $, which gives us 
+%	$ g(t_0)-y\in Au(t_0) $ and 
+%	$ \norm{y}\leq \norm{\prt_t^+ u(t_0)}=
+%	\norm{M_rg(t_0)-\pr_{Au(t_0)} M_rg(t_0)} $.
+%	This can only hold if $ y=\prt_t^+ u(t_0) $.
+%	We deduce that $ \prt_t^+ u(t)\ra \prt_t^+ u(t_0) $
+%	as $ t\ane t_0 $. For a similiar reason as before we have
+%	that $ t\mapsto f(t)-A_0 u(t) $ is continuous in $ t_0 $
+%	if and only if $ t\mapsto \norm{f(t)-A_0 u(t)} $
+%	is continuous in $ t_0 $. In that case $ u $
+%	in $ t_0 $ since
+%	\begin{align*}
+%		\frac{u(t)-u(t_0)}{t-t_0}
+%		=\frac{1}{t-t_0}
+%		\int_{t_0}^t \prt_t^+ u\, ds.
+%	\end{align*}
+%	Finally if $ A $ is single valued
+%	the function $ t\mapsto Au(t) $
+%	is continuous in $ [0,T] $
+%	as $ \norm{Au(t)} $ is bounded.
+%	If $ f $ is continuous, then the functions
+%	$ t\ra \prt_t^+ u(t)=f(t)-Au(t) $
+%	is continuous on $ [0,T] $ in the
+%	weak topology. It is thus weakly
+%	differentiable on $ (0,T) $.
+
+\subsection{Gradient Flow for Proper Convex Lower Semicontinous 
+	Potentials in Hilbert Spaces}
+In this section we study both the $ \ref{equation:hom GSD} $ equation
+and the $ \ref{equation:GSD} $ equation
+in the case that the maximal monotone multivalued operator $ A $
+in $ \rH $ is the sub differential of a proper convex lower semicontinuous function
+on $ \rH $. First we deduce some properties and estimates of the \ref{equation:hom GSD}
+equation. Afterwards we present a condition for a weak solution
+of the \ref{equation:GSD} equation to be a strong solution and explore
+the regularity of the solutions based on this condition.
+Finally we end this section by studying the asymptotic property
+of strong solutions $ u(t) $ of the \ref{equation:GSD} equation
+when $ t\nearrow\plus\infty $ under certain criteria.
+\medskip
+
+Throughout this section let $ \vp:\rH\ra(\minus\infty,\plus\infty] $ 
+be a proper convex l.s.c function on 
+$ \rH $. Define the sub differential of $ \vp $ as the maximal monotone 
+multivalued operator $ A:=\prt \vp $. Let $ u_0\in\overline{D(A)} $
+be arbitrary and define $ u(t):=S(t)u_0 $ for all $ t\geq 0 $,
+where $ (S(t))_{t\geq 0} $ is the semi-group of 
+contractions generated by $ A $ and let $ T>0 $ be any positive value, namely the length of our time interval.
+\medskip
+
+The theorem \ref{theorem:existence of hom gf} guarantees the existence
+of a solution to the \ref{equation:hom GSD} equation. However
+we are able to exploit the properties of sub differential operators
+to gain many properties and estimates of this solution. 
+These are featured in the following theorem.  
+
+\begin{theorem}\label{theorem:hom gf prop conv lsc func}
+	The solution $ u $ induced by the semi group of contractions
+	generated by $ A $ with initial value $ u_0 $ has the following properties
+	\begin{enumerate}[label=(\roman*)]
+		\item For all $ t>0 $ we have the stability estimate
+		\begin{align}\label{equation:proper convex lsc est}
+			\norm{A_0 u(t)}\leq \norm{A_0v}+\frac{1}{t}\norm{u_0-v}
+			\qquad\forall v\in D(A).
+		\end{align}
+		\item The function $ \vp(u)=\vp\circ u $ is in
+		$ L_{\mathrm{loc}}^1(0,\plus\infty;\,\rH) $. On any closed
+		subsets of $ (0,\plus\infty) $ the map $ \vp(u) $ is 
+		Lipschitz, convex and
+		right differentiable with right derivative 
+		\begin{align*}
+			\prt_t^+\vp(u)=-\norm{\prt_t^+ u}^2.
+		\end{align*}
+		\item The weak derivative of $ u $ satisfies 
+		$ \sqrt{t}\, \prt_t u\in  L_{\mathrm{loc}}^2(0,\plus\infty;\,\rH) $.
+		\item We have $ u_0\in D(\vp) $ if and only if
+		$ \prt_t u\in L_{\mathrm{loc}}^2(0,\plus\infty;\,\rH) $.
+		\item If $ u_0\in D(\vp) $ then we have
+		$ \vp(u(t))\nearrow \vp(u_0) $ when $ t\se 0 $.
+		In addition we have the following relations
+		\begin{align}
+				\vp(u_0)-\vp(u(T))
+				&=\int_0^T \norm{\prt_t\,u}^2\,dt,
+				\label{equation:hom gf pclsc func comp with sol}\\[0.5cm]
+				\frac{\norm{u(T)-u_0}}{\sqrt{T}}
+				&\leq \sqrt{\vp(u_0)-\vp(u(T))},
+				\label{equation:hom gf pclsc func right der}\\[0.5cm]
+				\norm{\prt^+_t\,u(T)}
+				&\leq \sqrt{\frac{\vp(u_0)-\vp(u(T))}{T}}.
+				\label{equation:hom gf pclsc func dist from start}
+		\end{align}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	We start of by proving the property $ (i) $.
+	Along the way we develop inequalities and identities that
+	we will use to prove the other properties.
+	From proposition \ref{proposition:yosida approx of prop lsc conv} we
+	know the Yosida approximation $ A_\lambda $
+	is the sub differential of a Fréchet differentiable
+	proper convex map $ \vp_\lambda $ on $\rH$. By definition of
+	the sub differential we have
+	\begin{align}\label{eq3:theorem:hom gf prop conv lsc func}
+		\vp_\lambda(u)-\vp_\lambda(v)\geq\inner{A_\lambda v}{u-v}
+		\qquad\forall u,v\in\rH.
+	\end{align}
+	The sum of an affine mapping and a proper convex l.s.c mapping
+	is still a proper convex l.s.c function. Thus by 
+	\eqref{eq3:theorem:hom gf prop conv lsc func}
+	define for any fixed $ v\in D(A) $ 
+	the non-negative proper convex l.s.c function $
+	 \rho_v^\lambda $ on $ \rH $ by
+	\begin{align*}
+		\rho_\lambda^v(u):=\vp_\lambda(u)-\vp_\lambda(v)- \inner{A_\lambda v}{u-v}
+		\qquad \forall u\in \rH
+	\end{align*}
+	that attains it's minimal value $0$ at $ v $, with the sub differential
+	and by 
+	proposition \ref{proposition:yosida approx of prop lsc conv}
+	the Fréchet derivative
+	$ B_\lambda^v\, u:=\prt \rho_\lambda^v(u)=A_\lambda u-A_\lambda v $. 
+	Let $ u_\lambda $ be the solution to the \ref{equation:hom GSD}
+	equation with operator $ A_\lambda $ and initial
+	value $ u_0 $ on $ [0,\plus\infty) $.
+	Note that the \ref{equation:hom GSD} equation with
+	operator $ A_\lambda $ and
+	initial value $ u_0 $ can be restated as
+	\begin{align}\label{eq1:theorem:hom gf prop conv lsc func}
+		\prt_t u_\lambda + B_\lambda^v\,u_\lambda=-A_\lambda v.
+	\end{align}
+	We are now in a position 
+	to proof the estimate (\ref{equation:proper convex lsc est}).
+	By definition of the sub differential we have
+	\begin{align*}
+		\rho_\lambda^v(v)-\rho_\lambda^v(u_\lambda)
+		\geq \inner{B_\lambda^v\, u_\lambda}{v-u_\lambda}.
+	\end{align*}
+	As $ \rho_\lambda^v(v)=0 $ and from 
+	\eqref{eq1:theorem:hom gf prop conv lsc func} we get
+	\begin{align*}
+		\rho_\lambda^v(u_\lambda)
+		\leq\inner{\prt_t u_\lambda+A_\lambda v}{v-u_\lambda}.
+	\end{align*}
+	We take the integral and see that
+	\begin{align}\label{eq2:theorem:hom gf prop conv lsc func}
+		\begin{split}
+			\int_0^T \rho_\lambda^v(u_\lambda)\,dt
+			&\leq \int_0^T\inner{\prt_t u_\lambda}{v-u_\lambda}\, dt
+			+\int_0^T\inner{A_\lambda v}{v-u_\lambda}\,dt\\
+			&=\frac{1}{2}\norm{u_0-v}^2
+			-\frac{1}{2}\norm{u_\lambda(T)-v}^2
+			-\int_0^T\inner{A_\lambda v}{u_\lambda-v}\,dt.
+		\end{split}
+	\end{align}
+	On the other hand, if we take
+	the inner product of
+	\eqref{eq1:theorem:hom gf prop conv lsc func}
+	with $ t\, \prt_t u_\lambda $ we deduce
+	from the Fréchet derivative from proposition
+	\ref{proposition:yosida approx of prop lsc conv} that
+	\begin{align*}
+		t\norm{\prt_t u_\lambda}^2 + 
+		t\,\prt_t\big(\rho_\lambda^v(u_\lambda)\big)
+		&=t\norm{\prt_t u_\lambda}^2 + 
+		t\inner{B_\lambda^v\,u_\lambda}{\prt_t u_\lambda}\\
+		&=-t\,\inner{A_\lambda v}{\prt_t u_\lambda}\\
+		&=-t\,\inner{A_\lambda v}{\prt_t (u_\lambda-v)}.
+	\end{align*}
+	Again we take the integral and get by using integration by parts
+	\begin{align*}
+		\int_0^T t\norm{\prt_t u_\lambda}^2\,dt 
+		+ T\,\rho_\lambda^v(u_\lambda(T))
+		-& \int_0^T \rho_\lambda^v(u_\lambda)\,dt\\
+		&=\int_0^T t\norm{\prt_t u_\lambda}^2+
+		t\,\prt_t\rho_\lambda^v(u_\lambda)\,dt\\
+		&=\int_0^T -t\,\inner{A_\lambda v}{\prt_t (u_\lambda-v)}\\
+		&=-T\,\inner{A_\lambda v}{u_\lambda(T)-v}
+		+\int_0^T \inner{A_\lambda v}{u_\lambda-v}\,dt.
+	\end{align*}
+	If we use
+	\eqref{eq2:theorem:hom gf prop conv lsc func}
+	and the fact that $ T\rho_\lambda^v(u_\lambda(T)) $ is non-negative
+	\begin{align}\label{eq4:proposition:hom gf prop conv lsc func}
+		\begin{split}
+			\int_0^T t\norm{\prt_t u_\lambda}^2\,dt
+			&=-T\,\inner{A_\lambda v}{u_\lambda(T)-v}
+			- T\,\rho_\lambda^v(u_\lambda(T))\\
+			&\qquad +\int_0^T \inner{A_\lambda v}{u_\lambda-v}\,dt
+			+ \int_0^T \rho_\lambda^v(u_\lambda)\,dt\\
+			&\leq -T\,\inner{A_\lambda v}{u_\lambda(T)-v}
+			-\frac{1}{2}\norm{u_\lambda(T)-v}^2
+			+ \frac{1}{2}\norm{u_0-v}^2\\
+			&\leq \frac{1}{2}T^2\norm{A_\lambda v}^2+\frac{1}{2}\norm{u_0-v}^2,
+		\end{split}
+	\end{align}
+	where in the last inequality we used
+	\begin{align*}
+		0\leq 
+		\frac{1}{2}\norm{T A_\lambda v+u_\lambda(T)-v}^2
+		=\frac{1}{2}T^2\norm{A_\lambda v}
+		+T\,\inner{A_\lambda v}{u_\lambda(T)-v}
+		+\frac{1}{2}\norm{u_\lambda(T)-v}^2.
+	\end{align*}
+	We know from theorem \ref{theorem:existence of hom gf} that 
+	$ \norm{\prt_t u_\lambda} $ is a monotonically decreasing
+	mapping. This can be used in 
+	\eqref{eq4:proposition:hom gf prop conv lsc func} to show
+	\begin{align*}
+		\frac{1}{2}T^2 \norm{\prt_t u_\lambda(T)}^2
+		\leq 
+		\int_0^T t\norm{\prt_t u_\lambda}^2\,dt
+		\leq \frac{1}{2}T^2\norm{A_\lambda v}^2+\frac{1}{2}\norm{u_0-v}^2.
+	\end{align*}
+	By multiplying by $ 2/T^2 $, taking the square root,
+	applying the triangle inequality 
+	and using proposition \ref{proposition:prop of Yos app}
+	we get 
+	\begin{align}\label{eq8:proposition:hom gf prop conv lsc func}
+		\norm{A_\lambda u_\lambda(T)}
+		=\norm{\prt_t u_\lambda(T)}
+		\leq \norm{A_\lambda v}+\frac{1}{T}\norm{u_0-v}
+		\leq \norm{A_0 v}+\frac{1}{T}\norm{u_0-v}.
+	\end{align}
+	The formula shows that $ \norm{A_\lambda u_\lambda(T)} $
+	is bounded from above when $ \lambda\se 0 $. Then
+	there is a weakly convergent subsequence
+	$ A_{\lambda_n} u_{\lambda_n}(T)\ha y$
+	for some $ y\in\rH $. Note we have from corollary 
+	\ref{corollary:yos app of sem grp of contr conv}
+	that $ u_\lambda(T)\ra u(T)$ in $ \cts $. In theorem
+	\ref{theorem:existence of hom gf} we proved
+	in the equation \eqref{eq4:theorem:existence of hom gf}
+	that $ \res_\lambda u_\lambda(T)\ra u(T) $
+	in $ \cts $. Then we have a sequence
+	$ (\res_{\lambda_n}u_{\lambda_n}(T),A_{\lambda_n}u_{\lambda_n}(T))
+	\subseteq A$. So by lemma \ref{lemma:weak seq cond}
+	we have that $ (u(T),y)\in A $. Moreover this 
+	means that the bound \eqref{eq8:proposition:hom gf prop conv lsc func}
+	holds in the limit and hence we can show 
+	\eqref{equation:proper convex lsc est} by
+	\begin{align*}
+		\norm{A_0 u(T)}
+		\leq \norm{y}
+		\leq \norm{A_0 v}+\frac{1}{T}\norm{u_0-v}.
+	\end{align*}
+	
+	Next we tackle property $ (ii) $. We show that $ \vp\circ u $ is in
+	$ L_{\mathrm{loc}}^1(0,\plus\infty;\,\rH) $ by looking
+	at equation \eqref{eq2:theorem:hom gf prop conv lsc func}.
+	Indeed we can reformulate the inequality
+	\begin{align*}
+		\int_0^T \vp_\lambda(u_\lambda)\,dt
+		\leq \frac{1}{2}\norm{u_0-v}^2
+		-\frac{1}{2}\norm{u_\lambda(T)-v}^2+T\vp_\lambda(v)
+		\leq \frac{1}{2}\norm{u_0-v}^2+T\vp_\lambda(v).
+	\end{align*}
+	From proposition \ref{proposition:yosida approx of prop lsc conv}
+	and the lower semi continuity of $ \vp $
+	we know that $ \vp_\lambda(u_\lambda)\ra \vp(u) $
+	and $ \vp_\lambda(v)\ra\vp(v) $ whenever $ \lambda\ra 0 $.
+	So from Fatous lemma we get that
+	$ L_{\mathrm{loc}}^1(0,\plus\infty;\,\rH) $.
+	Next we verify that $ \vp(u) $ satisfies the
+	other properties on $ [s,\plus\infty) $ for
+	any $ s>0 $. Take any $ t\geq s $ and $ h>0 $
+	and note by definition of the sub differential
+	and the characterisation of the right derivative
+	in theorem \ref{theorem:existence of hom gf} that
+	\begin{align*}
+		\vp(u(t+h))-\vp(u(t))
+		\geq\inner{A_0 u(t)}{u(t+h)-u(t)}
+		=-\inner{\prt_t^+ u(t)}{u(t+h)-u(t)}
+	\end{align*}
+	and
+	\begin{align*}
+		\vp(u(t))-\vp(u(t+h))
+		\geq\inner{A_0 u(t+h)}{u(t)-u(t+h)}
+		=-\inner{\prt_t^+ u(t+h)}{u(t)-u(t+h)}.
+	\end{align*}
+	From this we devise a bound
+	\begin{align}\label{eq5:proposition:hom gf prop conv lsc func}
+		\begin{split}
+			&\abs{\vp(u(t+h))-\vp(u(t))}\\
+			&\quad\leq \max\big\{\abs{\inner{\prt_t^+ u(t)}{u(t+h)-u(t)}},
+			\abs{\inner{\prt_t^+ u(t+h)}{u(t)-u(t+h)}}\big\}\\
+			&\quad\leq \max\big\{\norm{\prt_t^+ u(t)},
+			\norm{\prt_t^+ u(t+h)}\big\}\norm{u(t+h)-u(t)},
+		\end{split}
+	\end{align}
+	as-well as the following inequality
+	\begin{align}\label{eq6:proposition:hom gf prop conv lsc func}
+		-\inner{\prt_t^+ u(t)}{u(t+h)-u(t)}
+		\leq \vp(u(t+h))-\vp(u(t))
+		\leq-\inner{\prt_t^+ u(t+h)}{u(t+h)-u(t)}.
+	\end{align}
+	Since $ \norm{\prt_t^+ u} $ is monotonically decreasing as stated
+	in theorem \ref{theorem:existence of hom gf} we see that
+	\begin{align*}
+		\norm{\prt_t^+ u(t+h)}
+		\leq \norm{\prt_t^+ u(t)}
+		\leq \norm{\prt_t^+ u(s)}
+	\end{align*}
+	and thus
+	\begin{align*}
+		\norm{u(t+h)-u(t)}
+		\leq h\norm{\prt_t^+ u(s)}.
+	\end{align*}
+	We apply this to \eqref{eq5:proposition:hom gf prop conv lsc func} 
+	in order to show that $ \vp(u) $ is Lipschitz
+	\begin{align*}
+		\abs{\vp(u(t+h))-\vp(u(t))}
+		\leq h\norm{\prt_t^+ u(s)}^2.
+	\end{align*}
+	On the other hand we can 
+	divide \eqref{eq6:proposition:hom gf prop conv lsc func}
+	by $ h $ and since $ \prt_t^+ u $ is 
+	right continuous by theorem \ref{theorem:existence of hom gf}-,
+	by taking the limit $ h\se 0 $ we observe that
+	$ \vp(u) $ is right differentiable as
+	\begin{align*}
+		-\norm{\prt_t^+ u(t)}^2
+		\leq \prt_t^+\vp(u(t))
+		=\lim_{h\se 0}\frac{\vp(u(t+h))-\vp(u(t))}{h}
+		\leq-\norm{\prt_t^+ u(t)}^2.
+	\end{align*}
+	Since $ \norm{\prt_t^+ u}  $ is monotonically
+	decreasing, so too is $ \vp(u) $ monotonically decreasing
+	and also convex.\smallskip
+	
+	The property $ (iii) $ is an immediate consequence
+	of \eqref{eq4:proposition:hom gf prop conv lsc func} by
+	applying Fatou's lemma again.\smallskip
+	
+	Now we consider property $ (iv) $. First assume that 
+	$ u_0\in D(\vp) $, then we have the identity
+	\begin{align}\label{eq7:proposition:hom gf prop conv lsc func}
+		\vp_\lambda(u_0)-\vp_\lambda(u_\lambda(t))
+		=-\int_0^t \prt_t\vp_\lambda(u_\lambda)\,ds
+		=-\int_0^t\inner{A_\lambda u_\lambda}{\prt_t u_\lambda}\,ds
+		=\int_0^t \norm{\prt_t u_\lambda}^2\,ds.
+	\end{align}
+	From the attributes of the function $ \vp_\lambda $ as stated
+	in proposition \ref{proposition:yosida approx of prop lsc conv}
+	(namely equation \eqref{equation:yosida potential res def}
+	and property $ (iv)\, $)
+	we see that
+	\begin{align*}
+		\vp(\res_\lambda u_\lambda)+\int_0^t \norm{\prt_t u_\lambda}^2\,ds
+		=\vp(\res_\lambda u_\lambda)-\vp_\lambda(u_\lambda(t))+\vp_\lambda(u_0)
+		\leq \vp_\lambda(u_0)
+		\leq \vp(u_0).
+	\end{align*}
+	Since $ \res_\lambda u_\lambda \ra u$ when $\lambda\se 0 $
+	and $ \vp $ is l.s.c we see that
+	$ \prt_t u\in\ltwo $ with
+	\begin{align*}
+		\vp(u)+\int_0^t \norm{\prt_t u(s)}^2\,ds
+		\leq \vp(u_0).
+	\end{align*}
+	Now suppose that $ \prt_t u\in\ltwo $. Then
+	analogue to \eqref{eq7:proposition:hom gf prop conv lsc func} 
+	we have for $ 0<s<t $ that
+	\begin{align*}
+		\vp(u(t))=\vp(u(s))+\int_s^t\norm{\prt_t u}^2\, dx.
+	\end{align*}
+	Note that $ \vp(u(s))$ remains bounded even if $ s= 0 $. 
+	By definition of the domain of a function on a $ \RR $-Hilbert space,
+	this implies that $ u_0\in D(\vp) $. This proofs the stated the equivalence
+	relation.\smallskip
+	
+	For the property $ (v) $ we have
+	already established the equation 
+	\eqref{equation:hom gf pclsc func comp with sol}
+	by an analogue computation as in 
+	\eqref{eq7:proposition:hom gf prop conv lsc func}. From
+	this identity we see that $ \vp(u(t))\ane\vp(u_0) $
+	when $ t\se 0 $. We can verify the equation 
+	\eqref{equation:hom gf pclsc func right der}
+	by using the
+	identity \eqref{equation:hom gf pclsc func comp with sol}
+	and the Hölder inequality  
+	\begin{align*}
+		\norm{u(T)-u_0}
+		\leq\int_0^T\norm{\prt_t u}\,dt
+		\leq \left(\int_0^t 1\,dt\right)^{\frac{1}{2}}
+		\left(\int_0^T\norm{\prt_t u}^2\,dt\right)^{\frac{1}{2}}
+		\leq \sqrt{T}\cdot \sqrt{\vp(u_0)-\vp(u(t))},
+	\end{align*}
+	and we prove equation \eqref{equation:hom gf pclsc func dist from start}
+	by again employing the equation
+	\eqref{equation:hom gf pclsc func comp with sol}
+	and using the fact that $ \norm{\prt_t^+ u} $ is monotonically decreasing
+	as stated in theorem \ref{theorem:existence of hom gf} to show
+	\begin{align*}
+		T\norm{\prt_t^+ u(T)}^2
+		\leq \int_0^T\norm{\prt_t^+ u}^2\,dt
+		=\vp(u_0)-\vp(u(T)).
+	\end{align*}
+\end{proof}
+
+We will state two criteria, one being stronger than the other, 
+on the inhomogeneous
+term $ f $ and proper convex l.s.c function
+$ \vp $ such that a weak solution
+of the \ref{equation:GSD} equation will be a strong solution. 
+Each of these conditions will have certain effects on
+the attributes of the solution $ u $. \medskip
+
+For the weaker criterion we will need the following lemma.
+
+\begin{lemma}\label{lemma:lemma for SGD prop of sub diff with in f in ltwo}
+	Let $ u\in \wonetwo $ and $ g\in\ltwo $
+	with $ u(t)\in D(A) $ and $ g(t)\in Au(t) $ for almost all
+	$ t\in(0,T) $. Then $ \vp(u) $ is absolutely continuous on $ [0,T] $.
+	If we define the set $ P $ consisting of all points $ t\in[0,T] $
+	such that $ u(t)\in D(A) $ and $ u $ and $ \vp(u) $
+	are differentiable in $ t $, then
+	\begin{align}\label{equation:der of vp u when diff}
+		\prt_t \vp(u(t))=\inner{h}{\prt_t u(t)}
+		\qquad\forall t\in P\;\;
+		\forall h\in Au(t).	
+	\end{align}
+\end{lemma}
+\begin{proof}
+	For all $ \lambda>0 $ define the function
+	$ u_\lambda:=A_\lambda u $. Almost everywhere
+	on $ [0,T] $ we have by proposition \ref{proposition:prop of Yos app} 
+	and the definition of the minimum norm section, the 
+	estimate
+	\begin{align*}
+		\norm{u_\lambda}
+		= \norm{A_\lambda u}
+		\leq \norm{A_0 u}
+		\leq \norm{g}.
+	\end{align*}
+	As $ g $ is in $ \ltwo $ we have 
+	by the dominated convergence theorem that
+	$ u_\lambda\ra A_0 u $ in $ \ltwo $.
+	Next we show that the function $ \vp(u) $ is
+	absolutely continuous.
+	We know  that 
+	$ \prt_t \vp_\lambda(u)=\inner{A_\lambda u}{\prt_t u} $
+	and thus
+	\begin{align*}
+		\vp_\lambda(u(t))-\vp_\lambda(u(s))
+		=\int_s^t \inner{A_\lambda u}{\prt_t u}\,dx.
+	\end{align*}
+	By proposition \ref{proposition:prop of Yos app}  and
+	proposition \ref{proposition:yosida approx of prop lsc conv}
+	we can take the limit $ \lambda\se 0 $ to show that 
+	\begin{align*}
+		\vp(u(t))-\vp(u(s))
+		=\int_s^t \inner{A_0 u}{\prt_t u}\,dx.
+	\end{align*}
+	This shows that the function $ \vp(u) $ is
+	absolutely continuous.
+	Finally take $ t\in P $ and $ h\in Au(t) $.
+	Then note for all $ \varepsilon>0 $ 
+	sufficiently small we have by definition of the
+	sub differential
+	\begin{align*}
+		\vp(u(t\pm\varepsilon))-\vp(u(t))
+		\geq \inner{h}{u(t\pm\varepsilon)-u(t)}.
+	\end{align*}
+	If we divide by $ \varepsilon $ and take
+	the limit $ \varepsilon\se 0 $ we find that
+	the desired equation \eqref{equation:der of vp u when diff}
+	is correct.
+\end{proof}
+
+For the criteria we will also require three supplementary
+results from Brézis, namely 
+in respective order \cite[Proposition 2.16]{brezis1973ope},
+\cite[Proposition 2.17]{brezis1973ope} and
+\cite[Corollary 2.3]{brezis1973ope}. 
+We will only present the claims but not prove them,
+as they are tangentially related to the subject.
+
+\begin{proposition}\label{proposition:b216}
+	{\fontfamily{cmr}\selectfont(Special Version)}
+	For all $ u\in\ltwo $ define the function
+	\begin{align*}
+		\Phi(u):=\begin{cases}
+			\int_0^T \vp(u)\,dt
+			& \text{ if }\vp(u)\in\lone,\\
+			\plus\infty
+			& \text{otherwise}.
+		\end{cases}
+	\end{align*}
+	Then $ \Phi $ is a proper convex l.s.c
+	function on	 $ \ltwo $ and $ \prt\Phi $
+	coincides with the maximal monotone operator $ \ltwomap A $ on $ \ltwo $, 
+	which we defined
+	in example \ref{example:map max mon op from H to L2}.
+\end{proposition}
+
+The weaker criterion demands that the inhomogeneous term
+is in $ \ltwo $ and that the proper convex l.s.c function
+$ \vp $ attains a minimal value.
+
+\begin{proposition}\label{proposition:b217}
+	{\fontfamily{cmr}\selectfont(Special Version)}
+	Let $ B $ be a maximally monotone multivalued operator
+	on $ \rH $ and define its resolvent as
+	$ \res_\lambda^B:=(\id+\lambda B)^{-1} $.
+	Suppose that there exists a constant
+	$ C\in\RR $ such that $ \vp(\res_\lambda^B x)\leq \vp(x)+C\lambda $
+	for all $ x\in \rH $ and all $ \lambda>0 $. 
+	Then the operator $ B+A $ is maximally monotone
+	and we have the estimate
+	\begin{align}
+		\norm{B_0 x}
+		\leq \norm{(B+A)_0 x}+\sqrt{C}
+		\qquad\forall x\in D(A)\cap D(B).
+	\end{align}
+\end{proposition}
+
+\begin{proposition}\label{proposition:b23}
+	Let $ B $ be a maximally monotone multivalued
+	operator on $ \rH $. Then $ R(B)=\rH $ (i.e. $ B $
+	is surjective) if
+	\begin{align*}
+		\lim_{\substack{x\in D(B) \\
+				\norm{x}\ra\plus\infty}}\norm{B_0 x}=\plus\infty.
+	\end{align*}
+\end{proposition}
+
+\begin{theorem}\label{theorem:SGD prop of sub diff with f in ltwo}
+	If $ f\in\ltwo $ and 
+	if $ \vp $ has minimal value $ 0 $, then if we define the
+	set $ K:=\{x\in\rH\sep \vp(x)=0\} $ we have
+	the following properties 
+	\begin{enumerate}[label=(\roman*)]
+		\item Weak solutions $ u $ of the \ref{equation:GSD} equation
+		with operator $ A $, inhomogeneous term $ f $ and initial value 
+		$ u_0 $ are strong solutions.
+		\item Almost everywhere on $ (0,T) $ we have the identity 
+		\begin{align*}
+			\norm{\prt_t u}^2+\prt_t\vp(u)=\inner{f}{\prt_t u}.
+		\end{align*}
+		\item If $ u_0\in D(\vp) $ then $ \vp(u)=\vp\circ u $
+		is absolutely continuous and $ \prt_t u\in \ltwo $ with
+		\begin{align}\label{equation:l2 est of der if init in dom and f in l2}
+			\normltwo{\prt_t u}
+			\leq \normltwo{f}
+			+\sqrt{\vp(u_0)}.
+		\end{align}
+		\item The weak derivative of $ u $ satisfies $ \sqrt{t}\,\prt_t u\in\ltwo$ with
+		an estimate
+		\begin{align}
+			\normltwo{\sqrt{t}\,\prt_t u}
+			\leq \normltwo{\sqrt{t}\,f}
+			+\frac{1}{\sqrt{2}}\normlone{f}
+			+\frac{1}{\sqrt{2}}\dist(u_0, K).
+			\label{equation:SGD of sub diff with f in ltwo energy bound}
+		\end{align}
+		\item In general the map 
+		$ \vp(u)=\vp\circ u$ is in $\lone $ and $ \vp(u) $ is absolutely
+		continuous on all compact subsets of $ (0,T] $. 
+		\item We have the estimates
+		\begin{align}
+			\normltwoat{\prt_t u}{s,T}
+			\leq \normltwo{f}
+			+\frac{1}{\sqrt{2s}}\normloneat{f}{0,s}
+			+\frac{1}{\sqrt{2s}}\dist(u_0, K)
+			\quad\forall s\in(0,T).
+			\label{equation:SGD of sub diff with f in ltwo energy bound at end}
+		\end{align}
+		Note in \eqref{equation:SGD of sub diff with f in ltwo energy bound at end}
+		we take the integral of subintervals of $ [0,T] $.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	First we prove the property $ (i) $ and the equation 
+	\eqref{equation:l2 est of der if init in dom and f in l2}
+	of property $ (iii) $. Thus
+	assume that $ u_0\in D(\vp) $. 
+	Define the operator $ B $ in $ \ltwo $
+	the same way as the operator 
+	in example \ref{example:spat der of W is max mon},
+	where $ D(B) $ sets $ u_0 $ as an initial condition.
+	For any $ \lambda >0 $ we denote the resolvent of $ B $ 
+	by $ \res_\lambda^B:=(\id + \lambda B)^{-1} $.
+	From example \ref{example:res of spat der of W} we know that
+	$ u_\lambda:=\res_\lambda^B u $ is expressed by
+	\begin{align*}
+		u_\lambda (t)
+		=e^{-\frac{t}{\lambda}}u_0
+		+\frac{1}{\lambda}\int_0^t e^{\frac{s-t}{\lambda}} u(s)\,ds.
+	\end{align*}
+	Define a function $ \Phi:\ltwo\ra(\minus\infty,\plus\infty] $ by
+	\begin{align*}
+		\Phi(u)=\begin{cases}
+			\int_0^T \vp(u)\,dt & \text{if }\vp(u)\in\lone,\\
+			\plus\infty & \text{otherwise}
+		\end{cases}
+		\qquad
+		\forall u\in\ltwo.
+	\end{align*}
+	From proposition \ref{proposition:b216} we know 
+	hat $ \Phi $ is a proper convex l.s.c. map. 
+	As $ \vp $ is a 
+	proper convex l.s.c. function we have
+	that
+	\begin{align}\label{eq5:theorem:SGD prop of sub diff with f in ltwo}
+		\vp(u_\lambda(t))\leq e^{-\frac{t}{\lambda}}\vp(u_0)
+		+\frac{1}{\lambda}\int_0^t e^{\frac{s-t}{\lambda}}\vp(u(s))\,ds.
+	\end{align}
+	Indeed we define a probability measure $ \mu_t $
+	supported in $ [0,t] $ by 
+	\begin{align*}
+		\mu_t=e^{-\frac{t}{\lambda}}\delta_0
+		+\frac{1}{\lambda}e^{\frac{s-t}{\lambda}}\chi_{[0,t]}\,ds,
+	\end{align*}
+	where $ \chi_{[0,t]} $ is the indicator function with support
+	$ [0,t] $ and $ \delta_0 $ is the Dirac delta function. 
+	Then we are able to verify 
+	\eqref{eq5:theorem:SGD prop of sub diff with f in ltwo}
+	by the Jensen inequality
+	\begin{align*}
+		\vp(u_\lambda(t))
+		&= \vp\left(e^{-\frac{t}{\lambda}}u_0
+		+\frac{1}{\lambda}\int_0^t e^{\frac{s-t}{\lambda}} u(s)\,ds\right)\\
+		&=\vp\left(\int_{[0,t]} u\,d\mu_t\right)\\
+		&\leq \int_{[0,t]} \vp(u)\,d\mu_t\\
+		&=e^{-\frac{t}{\lambda}}\vp(u_0)
+		+\frac{1}{\lambda}\int_0^t e^{\frac{s-t}{\lambda}} \vp(u(s))\,ds.
+	\end{align*}
+	If we integrate the inequality 
+	\eqref{eq5:theorem:SGD prop of sub diff with f in ltwo} 
+	over $ (0,T) $ we get
+	\begin{align*}
+		\Phi(u_\lambda)
+		&\leq \lambda(1-e^{-\frac{T}{\lambda}})\vp(u_0)
+		+\frac{1}{\lambda}\int_0^T\int_0^t 
+		e^{\frac{s-t}{\lambda}} \vp(u(s))\,ds\,dt\\
+		&= \lambda(1-e^{-\frac{T}{\lambda}})\vp(u_0)
+		+\frac{1}{\lambda}\int_0^T\int_s^T 
+		e^{\frac{s-t}{\lambda}} \vp(u(s))\,dt\,ds\\
+		&= \lambda(1-e^{-\frac{T}{\lambda}})\vp(u_0)
+		+\frac{1}{\lambda}\int_0^T
+		e^{\frac{s}{\lambda}}\int_s^T 
+		e^{\frac{-t}{\lambda}}\,dt\,\vp(u(s))\,ds\\
+		&= \lambda(1-e^{-\frac{T}{\lambda}})\vp(u_0)
+		+\int_0^T (1-e^{\frac{s-T}{\lambda}}) \vp(u(s))\,ds\\
+		&\leq \lambda\vp(u_0)+\Phi(u).
+	\end{align*}
+	From proposition \ref{proposition:b217} 
+	we get that $ B+\prt\Phi $ is a maximally monotone
+	operator on $ \ltwo $ as-well as the bound
+	\eqref{equation:l2 est of der if init in dom and f in l2}
+	by
+	\begin{align*}
+		\normltwo{\prt_t u}
+		=\normltwo{B_0 u}
+		\leq \normltwo{(\prt\Phi+B)_0 u}
+		+\sqrt{\vp(u_0)} 
+		=\normltwo{f}
+		+\sqrt{\vp(u_0)}.
+	\end{align*}
+	Proposition \ref{proposition:b216} states that we can replace $ \prt\Phi $ by $ \ltwomap A $. 
+	By the Poincaré inequality (adapt the proof in 
+	\cite[Proposition 8.13]{brezis2011functional}
+	to Banach spaces) we have for some $ C>0 $ that
+	\begin{align*}
+		\normltwo{u} 
+		\leq C \normltwo{\prt_t u}
+		\leq C\normltwo{(\ltwomap A+B) u}
+		+C\sqrt{\vp(u_0)}.
+	\end{align*}
+	However this means we can apply proposition \ref{proposition:b23}
+	to see that $ R(\ltwomap A+B)=\ltwo $, which proves the claim $ (i) $. \smallskip
+	
+	Next we show the attribute $ (ii) $.
+	Let $ (u_n)_{n\geq 1} $ be strong solutions of the
+	\ref{equation:GSD} equation with operator $ A$, inhomogeneous
+	term $ f $ and initial value $ w_n\in D(\vp) $ such that $ w_n\ra u_0 $. 
+	Then $ u_n\ra u $ in $ \cts $.
+	Note that the property $ (i) $ holds
+	for $ u_n $. In particular we observe that
+	$ \prt_t u_n\in\ltwo $. Moreover as $ u_n $ is continuous
+	we deduce that $ u_n\in W^{1,2}(0,T;\,\rH) $. Also
+	there is $ g(t)\in Au(t) $ for almost all $ t\in [0,T] $
+	with $ \prt_t u+g=f $ and so $ g=f-\prt_t u\in\ltwo $.
+	We are able to apply lemma 
+	\ref{lemma:lemma for SGD prop of sub diff with in f in ltwo}
+	to get 
+	\begin{align}\label{eq1:theorem:SGD prop of sub diff with f in ltwo}
+		\norm{\prt_t u_n}^2+\prt_t\vp(u_n)=\inner{f}{\prt_t u_n}.
+	\end{align}
+	From the attribute $ (ii) $ we see that $ \vp(u) $ 
+	is absolutely continuous. As we have already verified
+	the identity
+	\eqref{equation:l2 est of der if init in dom and f in l2},
+	we can thus conclude the proof of property
+	$ (iii) $.\smallskip
+	
+	Next we tackle $ (iv) $. If we apply the Cauchy-Schwarz inequality, multiply
+	with $ t $ and integrate over $ (0,T) $ we get
+	\begin{align*}
+		\int_0^T\norm{\prt_t u_n}^2 t\,dt
+		+ T\vp(u_n(T))
+		-\int_0^T \vp(u_n)\,dt
+		\leq \int_0^T\norm{f}\cdot \norm{\prt_t u_n} t\,dt.
+	\end{align*}
+	Using the Hölder inequality we see that
+	\begin{align*}
+		\normltwo{\sqrt{t}\,\prt_t u_n}^2
+		-\normltwo{\sqrt{\vp(u_n)}}^2
+		&\leq 
+		\normltwo{\sqrt{t}\,\prt_t u_n}^2
+		+ T\vp(u_n(T))
+		-\normltwo{\sqrt{\vp(u_n)}}^2\\
+		&\leq \normltwo{\sqrt{t}\,f}\normltwo{\sqrt{t}\,\prt_t u_n}.
+	\end{align*}
+	From this we deduce
+	\begin{align}\label{eq2:theorem:SGD prop of sub diff with f in ltwo}
+		\normltwo{\sqrt{t}\,\prt_t u_n}
+		\leq\normltwo{\sqrt{t}\,f}
+		+\normltwo{\sqrt{\vp(u_n)}}.
+	\end{align}
+	Indeed this follows from an elementary calculation 
+	with $ a,b,c\geq 0 $ by
+	\begin{align*}
+		a(a+b)\leq a^2-b^2\leq ac
+		\qimplies
+		a+b\leq c
+		\qimplies
+		a\leq c-b\leq c+b.
+	\end{align*}
+	By definition of the sub differential $ A $ we have 
+	almost everywhere on $ (0,T) $ the inequality
+	\begin{align*}
+		\vp(v)-\vp(u_n)\geq \inner{A u_n}{v-u_n}=\inner{f-\prt_t u_n}{v-u_n}.
+	\end{align*}
+	In case $ v\in K $ we derive the following bound by using the Cauchy-Schwarz inequality
+	\begin{align*}
+		-\vp(u_n)\geq &\inner{f-\prt_t u_n}{v-u_n}\\
+		&\qimplies
+		\vp(u_n)+\inner{\prt_t(u_n-v)}{u_n-v}
+		\leq \inner{f}{u_n-v}
+		\leq \norm{f}\norm{u_n-v}\\
+		&\qimplies\vp(u_n)+\frac{1}{2}\prt_t\norm{u_n-v}^2
+		\leq \norm{f}\,\norm{u_n-v}.
+	\end{align*}
+	Then if we take the integral over $ (0,t) $ we get
+	\begin{align*}
+		\frac{1}{2}\left(\norm{u_n-v}^2+2\int_0^t\vp(u_n)\,ds\right)
+		&\leq \frac{1}{2}\norm{w_n-v}^2+\int_0^t\norm{f}\,\norm{u_n-v}\,ds\\
+		&= \frac{1}{2}\norm{w_n-v}^2+
+		\int_0^t\norm{f}\,
+		\left(\norm{u_n-v}^2\right)^{\frac{1}{2}}\,ds\\
+		&\leq \frac{1}{2}\norm{w_n-v}^2+
+		\int_0^t\norm{f}\,
+		\left(\norm{u_n-v}^2+2\int_0^t \vp(u_n)\, dx\right)^{\frac{1}{2}}\,ds.
+	\end{align*}
+	Using the Gronwall lemma (cf. lemma \ref{lemma:gromwall})
+	\begin{align*}
+		\sqrt{2}\,\normltwo{\sqrt{\vp(u_n)}}
+		\leq \left(\norm{u_n-v}^2+2\int_0^t \vp(u_n)\, dx\right)^{\frac{1}{2}}
+		\leq \norm{w_n-v}+\int_0^t\norm{f}\,dt.
+	\end{align*}
+	In particular
+	\begin{align}\label{eq3:theorem:SGD prop of sub diff with f in ltwo}
+		\normltwo{\sqrt{\vp(u_n)}}
+		\leq
+		\frac{1}{\sqrt{2}}\normlone{f}
+		+\frac{1}{\sqrt{2}}\norm{w_n-v}.
+	\end{align}
+	We combine \eqref{eq2:theorem:SGD prop of sub diff with f in ltwo}
+	and \eqref{eq3:theorem:SGD prop of sub diff with f in ltwo}
+	to get
+	\begin{align*}
+		\normltwo{\sqrt{t}\,\prt_t u_n}
+		\leq \normltwo{\sqrt{t}\,f}
+		+\frac{1}{\sqrt{2}}\normlone{f}
+		+\frac{1}{\sqrt{2}}\norm{w_n-v}.
+	\end{align*}
+	By lemma \ref{lemma:bnd wk der and str conv fun imply wk conv of wk der}
+	if we take the limit $ n\ra \infty $ we see that 
+	\eqref{equation:SGD of sub diff with f in ltwo energy bound}
+	holds true, which proves $ (iv) $.\smallskip
+	
+	From \eqref{eq3:theorem:SGD prop of sub diff with f in ltwo}
+	we see that $ \vp(u)\in\lone $. Then the absolute
+	continuity claim of $ (v) $ is a consequence
+	of the attribute $ (iii) $. Thus
+	we have shown $ (v) $.\smallskip
+	
+	For the attribute $ (vi) $, let $ s\in (0,T) $ and apply the mean value theorem on 
+	\eqref{eq3:theorem:SGD prop of sub diff with f in ltwo}.
+	Then there exists $ t_n\in (0,s) $ with
+	\begin{align}\label{eq4:theorem:SGD prop of sub diff with f in ltwo}
+		\vp(u_n(t_n))
+		=\frac{1}{s}\int_0^s\vp(u_n)\,dt
+		\leq \frac{1}{2s}\left(\norm{w_n-v}
+		+\normloneat{f}{0,s}\right)^2.
+	\end{align}
+	If we integrate \eqref{eq1:theorem:SGD prop of sub diff with f in ltwo}
+	on $ (t_n,T) $ we get
+	\begin{align*}
+		\normltwoat{\prt_t u_n}{t_n,T}^2
+		&= \vp(u_n(t_n))-\vp(u_n(T))
+		+\int_{t_n}^T\norm{f}\,\norm{\prt_t u_n}\,dt\\
+		&\leq \vp(u_n(t_n))
+		+\int_{t_n}^T\norm{f}\,\norm{\prt_t u_n}\,dt.
+	\end{align*}
+	Then applying \eqref{eq4:theorem:SGD prop of sub diff with f in ltwo}
+	to this inequality we derive
+	\begin{align*}
+		\normltwoat{\prt_t u_n}{s,T}
+		&\leq \normltwoat{\prt_t u_n}{t_n,T}\\
+		&\leq \normltwoat{f}{t_n,T}+\sqrt{\vp(u_n(t_n))}\\
+		&\leq \normltwo{f}^2
+		+\frac{1}{\sqrt{2s}}\normloneat{f}{0,s}
+		+\frac{1}{\sqrt{2s}}\norm{w_n-v}.
+	\end{align*}
+	By lemma \ref{lemma:bnd wk der and str conv fun imply wk conv of wk der}
+	if we take the limit $ n\ra\infty $ we get 
+	\eqref{equation:SGD of sub diff with f in ltwo energy bound at end}.
+	This concludes the proof of the Theorem.
+\end{proof}
+
+For the stronger criterion we require that $ f $ is absolutely continuous
+and that both $ f $ and $ \prt_t f $ are in $ \ltwo $.
+
+\begin{theorem}\label{theorem:SGD prop of sub diff with f in w11}
+	Let $ f\in W^{1,2}(0,T;\,\rH) $ and 
+	assume that $ \vp $ has minimal value $ 0 $ and define the
+	set $ K:=\{x\in\rH\sep \vp(x)=0\} $. Then we have
+	the following properties. 
+	\begin{enumerate}[label=(\roman*)]
+		\item All weak solutions of the \ref{equation:GSD}
+		equation with operator $ A $, inhomogeneous term  $ f $ and initial 
+		value $ u_0\in \overline{D(A)} $ are strong solutions.
+		\item The range of $ u$ is in $ D(A) $ 
+		on $ (0,T] $, $ u $ is right differentiable
+		on $ (0,T) $, $ t\prt_t u\in\linf $ and
+		the following estimate holds true
+		\begin{align}\label{equation:SGD of sub diff with f in w11 energy bound der}
+			\begin{split}
+				\norm{\prt_t^+ u(t)}
+				\leq \norm{f}
+				&+\frac{1}{t}\dist(u_0, K)
+				+\int_0^t\norm{\prt_t f}\frac{s^2}{t^2}\,ds\\
+				&+\frac{\sqrt{2}}{t}
+				\left(\int_0^t\norm{\prt_t f} s\,ds\right)^{\frac{1}{2}}
+				\left(\dist(u_0,K)+\int_0^t\norm{f}\,ds\right)^{\frac{1}{2}}.
+			\end{split}
+		\end{align}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	From theorem \ref{theorem:SGD prop of sub diff with f in ltwo}
+	we know that weak solutions are strong solutions. 
+	By definition of strong solutions we have that 
+	the range of $ u $ is in $ D(A) $ on $ (0,T) $. From
+	proposition \ref{proposition:gsd sol is lipschitz}
+	we know that the range of $ u$ is in $ D(A) $ on $ (0,T] $,
+	$ u $ is right differentiable in $ (0,T) $ and 
+	$ u $ is Lipschitz on all compact subsets
+	of $ (0,T] $. We must only verify the bound
+	in equation 
+	\eqref{equation:SGD of sub diff with f in w11 energy bound der}.
+	\smallskip
+	
+	First we assume that $ u_0\in D(\vp) $. Since $ u $ is continuous we know that
+	$ u\in\ltwo $ and by theorem \ref{theorem:SGD prop of sub diff with f in ltwo}
+	we get $ \prt_t u\in\ltwo $. But then also $ f-\prt_t u\in \ltwo $,
+	which means that for all $ v\in\rH $ we can apply lemma
+	\ref{lemma:lemma for SGD prop of sub diff with in f in ltwo} to get
+	\begin{align*}
+		\norm{\prt_t u}^2+\prt_t\vp(u)
+		=\inner{f}{\prt_t u}
+		=\inner{f}{\prt_t (u-v)}.
+	\end{align*}
+	Since $ \prt_t u\in\ltwo $ as stated in theorem
+	\ref{theorem:SGD prop of sub diff with f in ltwo},
+	if we multiply this equation by $ t $ and integrate 
+	over $ (0,T) $ we get
+	\begin{align}\label{eq1:theorem:SGD prop of sub diff with f in w11}
+		\begin{split}
+			\normltwo{\sqrt{t}\,\prt_t u}^2
+			&+T\vp(u(T))\\
+			&=\normlone{\vp(u)}
+			+\int_0^T \inner{t\,f}{\prt_t u-\prt_t v}\,dt\\
+			&=\normlone{\vp(u)}
+			+T\inner{f(T)}{u(T)-v}-\int_0^T \inner{f+t\, \prt_t f}{u-v}\,dt.
+		\end{split}
+	\end{align} 
+	By definition of the sub differential we have 
+	for almost everywhere $ (0,T) $ that
+	\begin{align*}
+		\vp(v)-\vp(u)
+		\geq \inner{Au}{v-u}
+		=\inner{f-\prt_t u}{v-u}.
+	\end{align*}
+	If $ v\in K $ then by restructuring the equation
+	and integrating over $ (0,T) $ we get that
+	\begin{align}\label{eq2:theorem:SGD prop of sub diff with f in w11}
+		\normlone{\vp(u)}
+		\leq \int_0^T \inner{f}{u-v}\,dt
+		+\frac{1}{2}\norm{u_0-v^2}-\frac{1}{2}\norm{u(T)-v}^2.
+	\end{align}
+	If we use this estimate 
+	\eqref{eq2:theorem:SGD prop of sub diff with f in w11} 
+	in the equation
+	\eqref{eq1:theorem:SGD prop of sub diff with f in w11}
+	we get by the Cauchy Schwarz inequality
+	\begin{align}\label{eq3:theorem:SGD prop of sub diff with f in w11}
+		\begin{split}
+			\normltwo{\sqrt{t}\,\prt_t u}^2
+			&\leq \normltwo{\sqrt{t}\,\prt_t u} + T\vp(u(T))\\
+			&=\normlone{\vp(u)}
+			+T\inner{f(T)}{u(T)-v}-\int_0^T \inner{f+t\, \prt_t f}{u-v}\,dt\\
+			&\leq \frac{1}{2}\norm{u_0-v^2}-\frac{1}{2}\norm{u(T)-v}^2
+			+T\inner{f(T)}{u(T)-v}\\
+			&\qquad+\int_0^T \inner{f}{u-v}\,dt
+			-\int_0^T \inner{f+t\, \prt_t f}{u-v}\,dt\\
+			&\leq\frac{1}{2} T^2\norm{f(T)}^2
+			+\frac{1}{2}\norm{u_0-v}^2
+			-\int_0^T\inner{u-v}{t\,\prt_t f}\,dt\\
+			&\leq\frac{1}{2} T^2\norm{f(T)}^2
+			+\frac{1}{2}\norm{u_0-v}^2
+			+\int_0^T\norm{u-v}\norm{t\,\prt_t f}\,dt,
+		\end{split}
+	\end{align}
+	where in the penultimate inequality we added
+	\begin{align*}
+		\frac{1}{2}\norm{T f(T)-(u(T)-v)}^2
+		=\frac{1}{2}T^2\norm{f(T)}^2
+		-T\inner{f(T)}{u(T)-v}
+		+\frac{1}{2}\norm{u(T)-v}^2.
+	\end{align*}
+	Note we have $ 0\in\prt\vp(v) $, since for any $ x\in\rH $ we have
+	\begin{align*}
+		\vp(x)-\vp(v)=\vp(x)\geq 0=\inner{0}{x-v}.
+	\end{align*}
+	Then equation \eqref{eq:bound diff between two sol} 
+	in lemma \ref{lemma:inequalities of weak sol} states
+	for the constant solution $ v $ that
+	\begin{align*}
+		\norm{u-v}\leq \norm{u_0-v}+\int_0^T\norm{f}\,dt.
+	\end{align*}
+	We apply this bound in 
+	\eqref{eq3:theorem:SGD prop of sub diff with f in w11}
+	and derive
+	\begin{align}\label{eq4:theorem:SGD prop of sub diff with f in w11}
+		\begin{split}
+			\normltwo{\sqrt{t}\,&\prt_t u}^2\\
+			&\leq\frac{1}{2} T^2\norm{f(T)}^2+\frac{1}{2}\norm{u_0-v}^2
+			+\big(\norm{u_0-v}+\normlone{f}\big)\normlone{t\prt_t f}.
+		\end{split}
+	\end{align}
+	From equation \eqref{equation:bound right der} in proposition 
+	\ref{proposition:gsd sol is lipschitz} we know
+	\begin{align}\label{eq5:theorem:SGD prop of sub diff with f in w11}
+		\norm{\prt_t^+ u(T)}
+		\leq \norm{\prt_t^+ u(t)}
+		+\normloneat{\prt_t f}{t,T}.
+	\end{align}
+	In addition from Hölders inequality we see that
+	\begin{align*}
+		\normlone{t\,\prt_t u}
+		\leq \normltwo{\sqrt{t}}\normltwo{\sqrt{t}\,\prt_t u}
+		=\frac{T}{\sqrt{2}}\normltwo{\sqrt{t}\,\prt_t u}.
+	\end{align*}
+	Then if we integrate \eqref{eq5:theorem:SGD prop of sub diff with f in w11}
+	on $ (0,T) $ and apply this bound we deduce
+	\begin{align*}
+		\frac{T^2}{2}\norm{\prt_t^+ u(T)}
+		&=\int_0^T \norm{\prt_t^+ u(T)}t\,dt\\
+		&\leq \int_0^T \norm{\prt_t^+ u}t\,dt
+		+\int_0^T \int_t^T \norm{\prt_t f(s)} t\,ds\,dt\\
+		&\leq \frac{T}{\sqrt{2}}\normltwo{\sqrt{t}\,\prt_t u}
+		+\int_{0}^T \norm{\prt_t f(s)}\int_0^s t\,dt\,ds\\
+		&\leq \frac{T}{\sqrt{2}}\normltwo{\sqrt{t}\,\prt_t u}
+		+\int_{0}^T \norm{\prt_t f} \frac{s^2}{2}\,ds.
+	\end{align*}
+	Then if we multiply with $ 2/T^2 $ we get
+	\begin{align*}
+		\norm{\prt_t^+ u(T)}
+		\leq \frac{\sqrt{2}}{T}\normltwo{\sqrt{t}\,\prt_t u}
+		+\int_0^T\norm{\prt_t f}\frac{t^2}{T^2}\,dt.
+	\end{align*}
+	If we insert the estimate \eqref{eq4:theorem:SGD prop of sub diff with f in w11}
+	we deduce the bound 
+	\eqref{equation:SGD of sub diff with f in w11 energy bound der}.\smallskip
+	
+	For the general case $ u_0\in\overline{D(\vp)} $, take
+	any sequence $ (w_n)_{n\geq 1}\subseteq D(\vp) $ with $ w_n\ra u_0 $
+	as $ n\ra \infty $. Let $ u_n $ be the solution to
+	the $ \ref{equation:GSD} $ with operator $ A $,
+	inhomogeneous term $ f $ and initial value $ w_n $.
+	From equation \eqref{eq:bound diff between two sol}
+	in lemma \ref{lemma:inequalities of weak sol} we 
+	know that $ u_n\ra u $ in $ \cts $. Indeed we have 
+	that $ \norm{u_n-u} $ is uniformly bounded from above by
+	$ \norm{w_n-u_0} $. Then
+	the desired inequality \eqref{equation:SGD of sub diff with f in w11 energy bound der}
+	follows if we take the limit $ n\ra \infty $ in the following
+	equation
+	\begin{align*}
+		\norm{A_0 u_n-f}
+		=\norm{\prt_t^+ u_n}
+		\leq \norm{f}+&\frac{1}{t}\dist(w_n, K)+\int_0^t\norm{\prt_t f}\frac{s^2}{t^2}\,ds\\
+		&+\frac{\sqrt{2}}{t}
+		\left(\int_0^t s \norm{\prt_t f}\, ds\right)^{\frac{1}{2}}
+		\left(\dist(w_n,K)+\normloneat{f}{0,t}\right)^{\frac{1}{2}}.
+	\end{align*}
+\end{proof}
+
+\begin{theorem}\label{theorem:right der goes to zero}
+	Let $ f:[0,+\infty)\ra\rH $ be a function such that
+	it is absolutely continuous on all compact subsets
+	of $ (0,+\infty) $, the weak derivative satisfies $ \prt_t\, f\in\lone $ 
+	and the map has the limit $f(t)\ra w$ when $ t\ra\infty$ such that $ w\in R(A) $.
+	If $ u $ is a strong solution to the \ref{equation:GSD} equation
+	with operator $ A $, inhomogeneous term $ f $ and initial
+	value $ u_0 $, then the following attributes hold true
+	\begin{enumerate}[label=(\roman*)]
+		\item The right derivatie vanishes at infinity, i.e. 
+		$ \norm{\prt_t^+\, u}\ra 0 $ when $ t\ra\plus\infty $.
+		\item If $ t\, \prt_t\, f\in\lone $, then we have
+		the asymptotic behavior $\norm{\prt_t^+\, u}=O(1/t) $.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	We start by proving property $ (i) $.
+	Observe for any $ v\in A^{-1}w $ and $ x\in\rH $ we have
+	by definition of the sub differential
+	\begin{align*}
+		\vp(x)\geq \vp(v)+\inner{w}{x-v}
+		\qimplies 
+		\vp(x)-\inner{w}{x}\geq \vp(v)-\inner{w}{v}.
+	\end{align*}
+	Therefore the function $ \psi:\rH\ra(\minus\infty,\plus\infty] $ characterized by
+	\begin{align*}
+		\psi(x):=\vp(x)-\inner{w}{x}-\min_{u\in D(\vp)}\{\vp(u)-\inner{w}{u}\}
+		\qquad\forall x\in \rH,
+	\end{align*}
+	is well-defined.
+	Clearly the map $ \psi $ attains a minimal value $ 0 $
+	in any point of $ A^{-1}w $.
+	Thus define the set $ K=\{v\in\rH\sep w\in Av\} $.
+	Let $ B $ be the sub differential operator of $ \psi $,
+	i.e. $ B:=\prt\psi $. Then the \ref{equation:GSD}
+	equation can be restated as
+	\begin{align*}
+		\prt_t^+ u+Bu\ni f-w.
+	\end{align*}
+	If we use equation 
+	\eqref{equation:SGD of sub diff with f in w11 energy bound der}
+	from theorem \ref{theorem:SGD prop of sub diff with f in w11}
+	we get
+	\begin{align}\label{eq1:right der goes to zero}
+		\begin{split}
+			\norm{\prt_t^+ u}
+			\leq \norm{f-w}
+			&+\frac{1}{t}\dist(u_0, K)
+			+\int_0^t\norm{\prt_t f(s)}\frac{s^2}{t^2}\,ds\\
+			&+\frac{\sqrt{2}}{t}
+			\left(\int_0^t\norm{\prt_t f} s\,ds\right)^{\frac{1}{2}}
+			\left(\dist(u_0,K)+\int_0^t\norm{f-w}\,ds\right)^{\frac{1}{2}}.
+		\end{split}
+	\end{align}
+	We now proceed by showing that the individual terms in the above estimate
+	tend to zero as $ t $ diverges towards infinity. This is clear for the
+	first two terms. The third term converges to zero by the Lebesgue dominated convergence theorem.
+	Indeed we have
+	\begin{align*}
+		\norm{\prt_t f(s)}\frac{s^2}{t^2}\leq \norm{\prt_t f(s)}
+		\qquad\forall 0<s\leq t,
+	\end{align*}
+	and for all $ s>0 $ we have a point wise null-sequence
+	\begin{align*}
+		\lim_{t\ra\plus\infty}\norm{\prt_t f(s)}\frac{s^2}{t^2}.
+	\end{align*}
+	For the fourth term in our bound \eqref{eq1:right der goes to zero}
+	we analyze two factors. For the first factor we have 
+	exactly analogue as before by the Lebesgue dominated convergence theorem
+	\begin{align*}
+		\lim_{t\ra\plus\infty}\sqrt{\frac{2}{t}}
+		\left(\int_0^t\norm{\prt_t f} s\,ds\right)^{\frac{1}{2}}
+		=0.
+	\end{align*}
+	For the remaining factor, we compute using Fubini's Theorem
+	\begin{align*}
+		\int_0^t\int_s^{\plus\infty}\norm{\prt_t f(x)}\,dx\,ds
+		&=\int_0^t\int_0^x\norm{\prt_t f(x)}\,ds\,dx
+		+\int_t^{\plus\infty}\int_0^t\norm{\prt_t f(x)}\,ds\,dx\\
+		&=\int_0^t\norm{\prt_t f} s\,ds
+		+t\int_t^{\plus\infty}\norm{\prt_t f}\,dx.
+	\end{align*}
+	Observe the following identity
+	\begin{align*}
+		f(t)-w
+		=f(-(-t))-w
+		=\int_{-\infty}^{-t}\prt_t\big(f(-s)\big)\,ds
+		=-\int_{-\infty}^{-t}\prt_t f(-s)\,ds
+		=-\int_{t}^{\plus\infty}\prt_t f(s)\,ds.
+	\end{align*}
+	We use this to deduce again with the Lebesgue dominated convergence theorem
+	\begin{align*}
+		\lim_{t\ra\plus\infty}\frac{1}{t}\int_0^t\norm{f-w}\,ds
+		\leq \lim_{t\ra\plus\infty}\int_t^{\plus\infty}\norm{\prt_t f}\,ds
+		+\int_0^t\norm{\prt_t f}\frac{s}{t}\,ds
+		=0.
+	\end{align*}
+	Therefore every term in the bound \eqref{eq1:right der goes to zero} converges
+	to $ 0 $, which proves the claim $ (i) $.\smallskip
+	
+	Lastly we tackle the attribute $ (ii) $. We argue similarly as for
+	the property $ (i) $, namely we want to show that each term in
+	the estimate \eqref{eq1:right der goes to zero} is $ O(1/t) $.
+	Then for the first term, as $ t\,\prt_t f\in\lone $ we have 
+	for some $ C>0 $ that
+	\begin{align*}
+		\norm{f-w}
+		\leq \int_t^{\plus\infty}\norm{\prt_t f}\,ds
+		\leq \int_t^{\plus\infty}\norm{\prt_t f} \frac{s}{t}\,ds
+		\leq \frac{C}{t}.
+	\end{align*}
+	and for the third term in \eqref{eq1:right der goes to zero} we have
+	\begin{align*}
+		\int_0^t\norm{\prt_t f}\frac{s^2}{t^2}\,ds
+		\leq \int_0^t\norm{\prt_t f}\frac{s}{t}\,ds
+		\leq \frac{C}{t}.
+	\end{align*}
+	For the last term in \eqref{eq1:right der goes to zero} it suffices to show
+	the second integral is bounded. Indeed we verify
+	\begin{align*}
+		\int_0^t\norm{f-w}\,ds
+		=\int_0^t\int_s^{\plus\infty}\norm{\prt_t f}\,dx\,ds
+		=t\int_t^{\plus\infty}\norm{\prt_t f}\,dx
+		+\int_0^{t}\norm{\prt_t f} s\,ds
+		\leq 2C.
+	\end{align*}
+	This proves the clam $ (ii) $ and thus concludes the proof.
+\end{proof}

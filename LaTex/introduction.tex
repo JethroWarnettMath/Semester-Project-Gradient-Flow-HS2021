@@ -1,0 +1,63 @@
+\section{Introduction}
+The implementation and use of machine learning algorithms to solve
+intricate and complex problems in areas such as data analysis
+has been staggering in recent years. 
+This is not surprising due to the ability of the state-of-the-art
+machine learning algorithms to efficiently and reliably solve
+problems, which are impracticable if not infeasible
+for a human to attempt to resolve. These problems include
+semantic segmentation \cite{DBLP:journals/corr/BadrinarayananK15},
+language translation \cite{edunov2018understanding}
+or speech recognition \cite{park2020improved}. 
+The fundamental algorithm that is used in machine learning (or at least a variant) is called the discrete gradient descent method.
+The theory behind this algorithm finds some of its origin 
+from the theory of maximal monotone multivalued operators 
+from Haïm Brezis \cite{brezis1973ope}.
+For a detailed account of the history behind the theory
+of maximal monotone multivalued operators, we
+refer interested readers to the paper \cite{borwein2010fifty}.\medskip
+
+This semester paper presents the theory of
+maximal monotone operators and in particular
+the theory of gradient flow
+from the textbook \cite{brezis1973ope} from Haïm Brézis
+and indicates the connection to machine learning algorithms.\medskip
+
+\subsection{Semester Paper Structure}
+In Section 3 we state the theory of maximal monotone multivalued
+operators in $ \RR $-Hilbert spaces and study
+in particular the subdifferential operator of 
+proper convex lower semicontinuous maps.\smallskip
+
+We start section 4 by introducing the reader to
+some preliminaries of function spaces over
+a $ \RR $-Hilbert space. We proceed by
+introducing the evolution equation
+of the generalised gradient descent equation,
+which is defined by
+\begin{align*}
+	\begin{cases}
+		\partial_t u+Au \ni f & \text{ on }[0,T],\\
+		u=u_0 & \text{ on }\{0\}.
+	\end{cases}
+\end{align*}
+First we consider the homogeneous case where $ f=0 $,
+and then the inhomogeneous case with 
+$ f\in\lone $. We finish the section by investigating the special case, 
+where the maximal multivalued operator $ A $
+is the subdifferential of a proper
+convex lower semi continuous function.\smallskip 
+
+In Section 5 we provide a brief explanation of what neural networks
+are in machine learning and how gradient flow is applied in
+algorithms to train these networks. We finish the section by
+presenting an example in ridge regression 
+as described in originally in the paper \cite{hoerl1970ridge}, 
+or for a more recent version in \cite{signoretto2014learning}.
+Alongside this example we conduct and present the results
+of a numerical experiment of ridge regression.\medskip
+
+Throughout the entire paper we assume that $ \rH $ is a $ \RR $-Hilbert space. 
+We denote by $ \inner{\cdot}{\cdot} $ the inner product of $ \rH $, 
+and by $ \norm{\cdot} $ the induced norm of $ \rH $, i.e. $ \norm{x}=\sqrt{\inner{x}{x}} $
+for all $ x\in\rH $.
